@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CNA Creative Arts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@200;300;400;700;900&family=Noto+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --teal:#00B8C0;--teal2:#00D4DE;--teal-dark:#007A80;--teal-pale:#F0FAFB;
+  --ink:#0A0806;--ink2:#1A1410;
+  --cream:#FAF7F2;--cream2:#F2EDE5;--cream3:#E8E0D4;
+  --gold:#8B6914;--gold2:#C9A84C;
+  --text:#1A1410;--muted:#7A6F65;
+  --serif:"Libre Baskerville",Georgia,serif;
+  --display:"Unbounded",sans-serif;
+  --body:"Be Vietnam Pro",sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px;}
+body{font-family:var(--body);background:var(--cream);color:var(--text);overflow-x:hidden;cursor:none;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--cream2);}
+::-webkit-scrollbar-thumb{background:var(--teal);}
+
+/* ── CUSTOM CURSOR ── */
+#cursor{position:fixed;z-index:9999;pointer-events:none;width:12px;height:12px;background:var(--teal);border-radius:50%;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:normal;}
+#cursor-ring{position:fixed;z-index:9998;pointer-events:none;width:40px;height:40px;border:1px solid var(--teal);border-radius:50%;transform:translate(-50%,-50%);transition:all .12s ease;opacity:.5;}
+body:hover #cursor{}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.5rem 4vw;
+  mix-blend-mode:normal;
+  transition:all .4s;
+}
+#nav.light{background:rgba(250,247,242,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream3);}
+.nav-logo{height:60px;display:flex;align-items:center;text-decoration:none;}
+.nav-logo img{height:100%;width:auto;object-fit:contain;}
+/*#nav:not(.light) .nav-logo img{filter:brightness(0) invert(1);}*/
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  font-family:var(--display);font-size:.7rem;font-weight:400;
+  letter-spacing:.2em;text-transform:uppercase;text-decoration:none;
+  transition:all .3s;position:relative;
+}
+#nav:not(.light) .nav-links a{color:rgba(255,255,255,.7);}
+#nav.light .nav-links a{color:var(--muted);}
+.nav-links a:hover{color:var(--teal)!important;}
+.nav-cta{
+  font-family:var(--display)!important;font-size:.58rem!important;font-weight:400!important;
+  padding:.55rem 1.5rem;background:var(--teal);color:white!important;
+  letter-spacing:.15em!important;transition:all .3s!important;
+}
+.nav-cta:hover{background:var(--teal2)!important;}
+.burger{display:none;background:none;border:none;cursor:none;flex-direction:column;gap:5px;padding:4px;}
+.burger span{display:block;width:22px;height:1.5px;transition:all .3s;}
+#nav:not(.light) .burger span{background:white;}
+#nav.light .burger span{background:var(--ink);}
+.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mmenu{
+  display:none;position:fixed;inset:0;z-index:999;
+  background:var(--ink);
+  flex-direction:column;align-items:flex-start;justify-content:center;
+  padding:4rem 8vw;gap:2rem;
+  opacity:0;pointer-events:none;transition:opacity .5s;
+}
+.mmenu.open{opacity:1;pointer-events:all;}
+.mmenu a{
+  font-family:var(--display);font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:200;color:rgba(255,255,255,.25);text-decoration:none;
+  letter-spacing:-.02em;transition:all .4s;line-height:1.1;
+}
+.mmenu a:hover{color:white;}
+.mmenu-num{font-size:.65rem;color:var(--teal);letter-spacing:.2em;margin-bottom:.3rem;font-family:var(--display);font-weight:400;}
+
+/* ── HERO SLIDER ── */
+#hero{position:relative;height:100vh;min-height:620px;display:flex;align-items:center;overflow:hidden;}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center top;opacity:0;transition:opacity 1.4s ease-in-out;}
+.hero-slide.active{opacity:1;}
+.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,rgba(10,8,6,0.92) 0%,rgba(10,8,6,0.6) 55%,rgba(10,8,6,0.25) 100%);}
+.hero-content{position:relative;z-index:2;max-width:700px;padding:0 60px;}
+.hero-eyebrow{font-family:var(--display);font-size:10px;letter-spacing:0.45em;text-transform:uppercase;color:var(--teal);margin-bottom:18px;opacity:0;animation:fadeUp 1s 0.5s ease forwards;display:flex;align-items:center;gap:14px;}
+.hero-eyebrow::before{content:'';display:block;width:36px;height:1px;background:var(--teal);}
+.hero-title{font-family:var(--display);font-size:clamp(48px,7vw,88px);font-weight:900;line-height:1.05;letter-spacing:-0.02em;color:#ffffff;margin-bottom:14px;opacity:0;animation:fadeUp 1s 0.7s ease forwards;}
+.hero-title span{color:var(--teal);}
+.hero-subtitle{font-family:var(--display);font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:38px;opacity:0;animation:fadeUp 1s 0.9s ease forwards;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp 1s 1.1s ease forwards;}
+.btn-primary{font-family:var(--display);font-size:11px;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink);background:var(--teal);padding:14px 36px;text-decoration:none;border:1.5px solid var(--teal);transition:all 0.25s;display:inline-block;}
+.btn-primary:hover{background:transparent;color:var(--teal);}
+.btn-outline{font-family:var(--display);font-size:11px;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);border:1.5px solid rgba(255,255,255,0.25);padding:13px 36px;text-decoration:none;transition:all 0.25s;display:inline-block;}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal);}
+.hero-dots{position:absolute;bottom:36px;left:60px;z-index:2;display:flex;gap:8px;}
+.hero-dot{width:20px;height:2px;background:rgba(255,255,255,0.25);cursor:pointer;transition:all 0.3s;}
+.hero-dot.active{background:var(--teal);width:44px;}
+.hero-scroll{position:absolute;bottom:28px;right:60px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--display);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.35);text-decoration:none;}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--teal),transparent);animation:scrollpulse 2s ease-in-out infinite;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scrollpulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  background:var(--teal);overflow:hidden;padding:.7rem 0;
+  border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.1);
+}
+.marquee-track{
+  display:flex;gap:3rem;white-space:nowrap;
+  animation:marquee 20s linear infinite;
+}
+.marquee-track span{
+  font-family:var(--display);font-size:.62rem;font-weight:300;
+  letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.85);
+  flex-shrink:0;
+}
+.marquee-dot{color:rgba(255,255,255,.4);margin:0 .5rem;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── SECTIONS ── */
+section{padding:8rem 8vw;}
+.s-num{
+  font-family:var(--display);font-size:.65rem;font-weight:400;
+  letter-spacing:.3em;color:var(--teal-dark,#007A80);text-transform:uppercase;
+  margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;
+}
+.s-num::before{content:"";width:24px;height:1px;background:var(--teal);}
+.s-title{
+  font-family:var(--display);
+  font-size:clamp(2.2rem,5vw,5rem);
+  font-weight:700;letter-spacing:-.04em;
+  line-height:.95;color:var(--ink);
+  margin-bottom:2rem;
+}
+.s-title em{font-style:italic;color:var(--teal);font-family:"Be Vietnam Pro",sans-serif;font-weight:400;font-size:1.1em;letter-spacing:0;}
+.rule-red{width:40px;height:3px;background:var(--teal);margin:2rem 0;}
+
+/* ── ABOUT ── */
+#about{background:var(--cream);}
+.about-layout{display:grid;grid-template-columns:55fr 45fr;gap:6rem;align-items:start;margin-top:4rem;}
+.about-text-col .drop-cap{
+  font-family:var(--display);font-size:clamp(5rem,10vw,10rem);
+  font-weight:900;color:var(--teal);line-height:1;
+  float:left;margin:.05em .15em 0 0;letter-spacing:-.05em;
+}
+.about-body{font-size:1.05rem;line-height:1.95;color:var(--text);}
+.about-body p{margin-bottom:1.2rem;}
+.about-body .pullquote{
+  font-family:"Be Vietnam Pro",sans-serif;font-style:italic;
+  font-size:clamp(1.2rem,2vw,1.6rem);
+  color:var(--ink);line-height:1.55;
+  border-left:3px solid var(--teal);padding-left:1.5rem;
+  margin:2rem 0;
+}
+.philosophy-block{
+  background:var(--ink);color:white;
+  padding:3rem;margin-top:3rem;position:relative;overflow:hidden;
+}
+.philosophy-block::before{
+  content:"C";
+  font-family:var(--display);font-size:12rem;font-weight:900;
+  color:var(--teal);opacity:.08;
+  position:absolute;top:-2rem;left:1rem;line-height:1;pointer-events:none;
+}
+.philosophy-block .q{font-family:"Be Vietnam Pro",sans-serif;font-weight:300;font-family:"Be Vietnam Pro",sans-serif;font-style:italic;font-size:1.3rem;line-height:1.65;color:rgba(255,255,255,.9);margin-bottom:1rem;}
+.philosophy-block .attr{font-family:var(--display);font-size:.58rem;font-weight:300;letter-spacing:.2em;color:rgba(255,255,255,.65);text-transform:uppercase;}
+.values-col{display:flex;flex-direction:column;gap:0;}
+.val-item{
+  padding:1.8rem 2rem;border-bottom:1px solid var(--cream3);
+  display:flex;align-items:flex-start;gap:1.5rem;
+  transition:all .4s;cursor:default;
+}
+.val-item:first-child{border-top:1px solid var(--cream3);}
+.val-item:hover{background:var(--cream2);padding-left:2.5rem;}
+.val-n{
+  font-family:var(--display);font-size:2rem;font-weight:900;
+  color:var(--cream3);line-height:1;flex-shrink:0;
+  transition:color .4s;
+}
+.val-item:hover .val-n{color:var(--teal);}
+.val-title{font-family:var(--display);font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:.4rem;}
+.val-desc{font-family:var(--body);font-size:.88rem;color:var(--muted);line-height:1.7;}
+
+/* ── PRODUCTIONS ── */
+#productions{background:var(--ink);padding:8rem 0;}
+#productions .inner-pad{padding:0 8vw;}
+#productions .s-num{color:var(--teal);}
+#productions .s-num::before{background:var(--teal);}
+#productions .s-title{color:white;}
+.prod-scroll{
+  display:flex;gap:0;margin-top:4rem;overflow-x:auto;
+  scroll-snap-type:x mandatory;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  user-select:none;
+}
+.prod-scroll::-webkit-scrollbar{display:none;}
+.prod-slide{
+  flex:0 0 calc(100vw / 3.2);min-width:280px;
+  position:relative;overflow:hidden;
+  scroll-snap-align:start;cursor:none;
+  aspect-ratio:2/3;
+}
+.prod-slide img{
+  width:100%;height:100%;object-fit:cover;object-position:top;
+  transition:transform .7s ease;filter:brightness(.7);
+}
+.prod-slide:hover img{transform:scale(1.05);filter:brightness(.55);}
+.prod-slide-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,8,6,1) 0%,rgba(10,8,6,.5) 40%,transparent 75%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:2.5rem 2rem;
+}
+.prod-num{font-family:var(--display);font-size:.55rem;font-weight:200;letter-spacing:.3em;color:var(--teal);margin-bottom:.5rem;}
+.prod-name{font-family:var(--display);font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:700;letter-spacing:-.03em;color:white;line-height:1.05;margin-bottom:.5rem;}
+.prod-year{font-family:var(--body);font-style:italic;font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:.8rem;}
+.prod-desc{font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.65;max-height:0;overflow:hidden;transition:max-height .5s;}
+.prod-slide:hover .prod-desc{max-height:80px;}
+.prod-badge{
+  display:inline-block;margin-top:.8rem;
+  padding:.25rem .8rem;border:1px solid var(--teal);
+  font-family:var(--display);font-size:.55rem;font-weight:300;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--teal);
+}
+.prod-upcoming{
+  flex:0 0 calc(100vw / 3.2);min-width:280px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  aspect-ratio:2/3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1.5rem;padding:2.5rem;
+}
+.prod-upcoming-title{font-family:"Be Vietnam Pro",sans-serif;font-style:italic;font-size:1.6rem;color:rgba(255,255,255,.2);text-align:center;line-height:1.4;}
+.prod-upcoming-date{font-family:var(--display);font-size:.58rem;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--teal);}
+.prod-scroll-hint{
+  display:flex;align-items:center;gap:.8rem;margin-top:2rem;
+  font-family:var(--display);font-size:.58rem;font-weight:200;
+  letter-spacing:.2em;color:rgba(255,255,255,.25);text-transform:uppercase;
+  padding:0 8vw;
+}
+.prod-scroll-hint::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.08);}
+
+/* ── TEAM ── */
+#team{background:var(--cream2);}
+.team-intro-grid{display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start;margin-bottom:5rem;}
+.team-founders{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:2px;}
+.team-support{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+.tmember{position:relative;overflow:hidden;cursor:default;}
+.tmember-img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;filter:grayscale(20%);transition:all .5s;}
+.tmember:hover .tmember-img{filter:grayscale(0%) brightness(1.05);transform:scale(1.02);}
+.tmember-info{
+  position:absolute;bottom:20px;left:0;right:0;
+  background:linear-gradient(to top,rgba(10,8,6,.95) 0%,transparent 100%);
+  padding:2rem 1.5rem 1.5rem;
+  transform:translateY(calc(100% - 4rem));transition:transform .4s ease;
+}
+.tmember:hover .tmember-info{transform:translateY(0);bottom:0;}
+.tmember-role{font-family:var(--display);font-size:.75rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:.3rem;}
+.tmember-name{font-family:var(--display);font-size:1.15rem;font-weight:700;color:white;letter-spacing:-.02em;margin-bottom:.5rem;}
+.tmember-desc{font-size:.75rem;color:rgba(255,255,255,.55);line-height:1.6;}
+.tmember-ph{
+  width:100%;aspect-ratio:3/4;
+  background:var(--cream3);
+  display:flex;align-items:center;justify-content:center;
+}
+.tmember-ph-text{font-family:var(--display);font-size:4rem;font-weight:900;color:var(--cream2);letter-spacing:-.05em;}
+.tmember-sm .tmember-img{aspect-ratio:1;}
+.tmember-sm .tmember-ph{aspect-ratio:1;}
+.tmember-sm .tmember-info{transform:translateY(calc(100% - 3.2rem));}
+/*.tmember-sm .tmember-name{font-size:.82rem;}*/
+.tmember-sm .tmember-desc{font-size:.8rem;}
+
+/* ── SERVICES ── */
+#services{background:var(--cream);}
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:4rem;}
+.svc-card{background:white;position:relative;overflow:hidden;transition:all .4s;}
+.svc-card:hover{box-shadow:0 20px 60px rgba(0,0,0,.1);transform:translateY(-4px);}
+.svc-img-wrap{height:220px;overflow:hidden;position:relative;}
+.svc-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.svc-card:hover .svc-img-wrap img{transform:scale(1.05);}
+.svc-img-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cream2);
+}
+.svc-body{padding:2.5rem;}
+.svc-n{font-family:var(--display);font-size:4rem;font-weight:900;color:var(--cream2);line-height:1;margin-bottom:1rem;letter-spacing:-.05em;}
+.svc-title{font-family:var(--display);font-size:1.1rem;font-weight:700;letter-spacing:-.03em;color:var(--ink);margin-bottom:.4rem;}
+.svc-sub{font-family:"Be Vietnam Pro",sans-serif;font-style:italic;font-size:.9rem;color:var(--teal);margin-bottom:1rem;}
+.svc-desc{font-size:.88rem;color:var(--muted);line-height:1.85;}
+.svc-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.3rem;}
+.svc-tag{padding:.2rem .65rem;border:1px solid var(--cream3);font-family:var(--display);font-size:.55rem;font-weight:300;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.svc-card:hover .svc-n{color:rgba(0,184,192,.1);}
+
+/* ── ROADMAP ── */
+#roadmap{background:var(--ink);}
+#roadmap .s-title{color:white;}
+.road-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;margin-top:4rem;}
+.road-head{font-family:var(--display);font-size:.7rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);margin-bottom:2.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.tl{position:relative;padding-left:1.5rem;}
+.tl::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--teal),rgba(200,16,46,.05));}
+.tli{position:relative;padding-left:2rem;margin-bottom:2.8rem;}
+.tli::before{content:"";position:absolute;left:-1.55rem;top:.35rem;width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px rgba(0,184,192,.45);}
+.tdate{font-family:var(--display);font-size:.55rem;font-weight:200;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:.4rem;}
+.ttitle{font-family:var(--display);font-size:.95rem;font-weight:700;color:white;letter-spacing:-.02em;margin-bottom:.4rem;}
+.tdesc{font-size:.82rem;color:rgba(255,255,255,.4);line-height:1.7;}
+.strategy-item{
+  padding:1.8rem 2rem;border:1px solid rgba(255,255,255,.05);
+  margin-bottom:1rem;display:flex;gap:1.5rem;align-items:flex-start;
+  transition:all .4s;
+}
+.strategy-item:hover{border-color:rgba(0,184,192,.28);background:rgba(0,184,192,.04);}
+.strat-n{font-family:var(--display);font-size:2.5rem;font-weight:900;color:rgba(0,184,192,.12);line-height:1;flex-shrink:0;transition:color .4s;}
+.strategy-item:hover .strat-n{color:rgba(0,184,192,.38);}
+.strat-title{font-family:var(--display);font-size:.82rem;font-weight:700;color:white;letter-spacing:-.02em;margin-bottom:.4rem;}
+.strat-desc{font-size:.82rem;color:rgba(255,255,255,.4);line-height:1.7;}
+
+/* ── CONTACT ── */
+#contact{background:var(--cream2);}
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem;margin-top:4rem;}
+.contact-info p{font-size:.95rem;color:var(--muted);line-height:1.95;margin-bottom:2rem;}
+.cdet{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.5rem;border-bottom:1px solid var(--cream3);padding-bottom:1.5rem;}
+.cdet-label{font-family:var(--display);font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-dark,#007A80);margin-bottom:.3rem;}
+.cdet-val{font-family:"Be Vietnam Pro",sans-serif;font-size:.95rem;color:var(--text);}
+.contact-form input,.contact-form textarea{
+  width:100%;padding:1rem 0;border:none;border-bottom:1px solid var(--cream3);
+  background:transparent;font-family:var(--body);font-size:.95rem;
+  color:var(--text);margin-bottom:1.5rem;outline:none;transition:border-color .3s;
+}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--teal);}
+.contact-form textarea{height:100px;resize:none;}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--cream3);}
+.contact-submit{
+  display:flex;align-items:center;gap:1rem;
+  font-family:var(--display);font-size:.75rem;font-weight:500;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--teal-dark,#007A80);
+  background:none;border:none;cursor:none;padding:0;
+  transition:gap .3s;
+}
+.contact-submit:hover{gap:2rem;}
+.submit-arrow{width:40px;height:1px;background:var(--teal);position:relative;transition:width .3s;}
+.submit-arrow::after{content:"";position:absolute;right:0;top:50%;transform:translateY(-50%) rotate(45deg);width:8px;height:8px;border-right:1px solid var(--teal);border-top:1px solid var(--teal);}
+.contact-submit:hover .submit-arrow{width:60px;}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
+.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem;}
+.ft-logo img{height:80px;object-fit:contain;margin-bottom:1.2rem;}
+.ft-tagline{font-family:"Be Vietnam Pro",sans-serif;font-style:italic;font-size:.95rem;color:rgba(255,255,255,.48);line-height:1.75;max-width:260px;}
+.ft-col h5{font-family:var(--display);font-size:.55rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);margin-bottom:1.3rem;}
+.ft-col ul{list-style:none;}
+.ft-col li{margin-bottom:.6rem;}
+.ft-col a{font-size:.85rem;color:rgba(255,255,255,.48);text-decoration:none;font-family:"Be Vietnam Pro",sans-serif;transition:color .3s;}
+.ft-col a:hover{color:white;}
+.ft-bot{border-top:1px solid rgba(255,255,255,.05);padding-top:2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.ft-bot span{font-family:var(--display);font-size:.55rem;font-weight:200;letter-spacing:.15em;color:rgba(255,255,255,.38);text-transform:uppercase;}
+
+/* ── BACK TO TOP ── */
+#btt{
+  position:fixed;bottom:2.5rem;right:2.5rem;z-index:900;
+  width:50px;height:50px;background:var(--teal);border:none;cursor:none;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transform:translateY(10px);
+  transition:all .35s;
+}
+#btt.show{opacity:1;pointer-events:all;transform:translateY(0);}
+#btt:hover{background:var(--teal2);transform:translateY(-3px);}
+#btt svg{width:16px;height:16px;fill:none;stroke:white;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.fiu{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
+.fiu.vis{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .ft-top{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:900px){
+  .about-layout,.road-grid,.contact-layout{grid-template-columns:1fr;gap:3rem;}
+  .team-founders{grid-template-columns:1fr 1fr;}
+  .team-support{grid-template-columns:repeat(2,1fr);}
+  .svc-grid{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .burger{display:flex;}
+  .mmenu{display:flex;}
+  section{padding:5rem 6vw;}
+  body{cursor:auto;}
+  #cursor,#cursor-ring{display:none;}
+  .prod-slide{flex:0 0 80vw;}
+  .hero-content{padding:0 24px;}
+  .hero-dots{left:24px;}
+  .hero-scroll{right:24px;}
+  .hero-title{font-size:clamp(38px,8vw,56px);}
+}
+@media(max-width:600px){
+  .team-founders{grid-template-columns:1fr;}
+  .hero-btns{flex-direction:column;}
+  .ft-top{grid-template-columns:1fr;gap:2.5rem;}
+  .team-intro-grid{grid-template-columns:1fr;}
+  .prod-slide{flex:0 0 90vw;}
+  .hero-title{font-size:38px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo"><img src="images/CNA_Creative_Arts.png" alt="CNA Creative Arts"></a>
+  <ul class="nav-links">
+    <li><a href="#about">Giới thiệu</a></li>
+    <li><a href="#team">Đội ngũ</a></li>
+    <li><a href="#productions">Nhạc kịch</a></li>
+    <li><a href="#services">Dịch vụ</a></li>
+    <li><a href="#roadmap">Dự án</a></li>
+    <li><a href="#contact" class="nav-cta">Liên hệ</a></li>
+  </ul>
+  <button class="burger" id="burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mmenu" id="mmenu">
+  <div style="position:absolute;top:2rem;right:4vw;font-family:var(--display);font-size:.6rem;font-weight:200;letter-spacing:.3em;color:rgba(255,255,255,.2);text-transform:uppercase;">Menu</div>
+  <a href="#about" class="mlink"><span class="mmenu-num">01</span>Giới thiệu</a>
+  <a href="#team" class="mlink"><span class="mmenu-num">02</span>Đội ngũ</a>
+  <a href="#productions" class="mlink"><span class="mmenu-num">03</span>Nhạc kịch</a>
+  <a href="#services" class="mlink"><span class="mmenu-num">04</span>Dịch vụ</a>
+  <a href="#roadmap" class="mlink"><span class="mmenu-num">05</span>Dự án</a>
+  <a href="#contact" class="mlink"><span class="mmenu-num">06</span>Liên hệ</a>
+</div>
+
+<!-- HERO SLIDER -->
+<section id="hero">
+  <div class="hero-slide active" style="background-image:url('images/hero_slide_1.jpg');background-position:center 30%"></div>
+  <div class="hero-slide" style="background-image:url('images/hero_slide_2.jpg');background-position:center 40%"></div>
+  <div class="hero-slide" style="background-image:url('images/hero_slide_3.jpg');background-position:center center"></div>
+
+  <!--div class="hero-content">
+    <p class="hero-eyebrow">Nhạc Kịch Thuần Việt từ 2018</p>
+    <h1 class="hero-title">NƠI<br>GIẤC<br><span>MƠ VIỆT</span><br>CẤT TIẾNG</h1>
+    <p class="hero-subtitle">Kiến tạo nền nhạc kịch thuần Việt — từ bản sắc dân tộc đến khán giả nhân loại</p>
+    <div class="hero-btns">
+      <a href="#productions" class="btn-primary">Khám phá tác phẩm</a>
+      <a href="#about" class="btn-outline">Về chúng tôi</a>
+    </div>
+  </div-->
+  
+  <div class="hero-content">
+    <p class="hero-eyebrow">Nhạc Kịch Thuần Việt</p>
+    <h1 class="hero-title">CNA<br><span>Creative</span><br>Arts</h1>
+    <p class="hero-subtitle">Kiến tạo giấc mơ nhạc kịch — Nơi những giấc mơ Việt cất tiếng</p>
+    <div class="hero-btns">
+      <a href="#shows" class="btn-primary">Tác Phẩm</a>
+      <a href="#about" class="btn-outline">Về Chúng Tôi</a>
+    </div>
+  </div>
+
+  <div class="hero-dots">
+    <div class="hero-dot active" onclick="goSlide(0)"></div>
+    <div class="hero-dot" onclick="goSlide(1)"></div>
+    <div class="hero-dot" onclick="goSlide(2)"></div>
+  </div>
+  <a href="#about" class="hero-scroll">
+    <div class="scroll-line"></div>
+    Khám phá
+  </a>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Sóng</span><span class="marquee-dot">✦</span>
+    <span>Viên Đá Ngũ Sắc</span><span class="marquee-dot">✦</span>
+    <span>Lửa Từ Đất</span><span class="marquee-dot">✦</span>
+    <span>Công Chúa Tóc Mây</span><span class="marquee-dot">✦</span>
+    <span>Giấc Mơ Nàng Tiên Cá</span><span class="marquee-dot">✦</span>
+    <span>Hà Nội Khúc Chuyển Mùa</span><span class="marquee-dot">✦</span>
+    <span>Sóng</span><span class="marquee-dot">✦</span>
+    <span>Viên Đá Ngũ Sắc</span><span class="marquee-dot">✦</span>
+    <span>Lửa Từ Đất</span><span class="marquee-dot">✦</span>
+    <span>Công Chúa Tóc Mây</span><span class="marquee-dot">✦</span>
+    <span>Giấc Mơ Nàng Tiên Cá</span><span class="marquee-dot">✦</span>
+    <span>Hà Nội Khúc Chuyển Mùa</span><span class="marquee-dot">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="s-num">01 — Giới thiệu</div>
+  <h2 class="s-title">Nghệ thuật<br><em>vì con người</em></h2>
+  <div class="about-layout">
+    <div class="about-text-col fiu">
+      <div class="about-body">
+        <div class="drop-cap">C</div>
+        <p>NA Creative Arts được dẫn dắt bởi NSƯT Cao Ngọc Ánh — kiến tạo một không gian đắm mình vào vũ trụ nhạc kịch bất tận, nơi bạn học cách đối thoại với chính mình và nâng niu từng rung động tinh tế nhất của tâm hồn.</p>
+        <div class="pullquote">"Tại CNA, mỗi giây phút trôi qua không chỉ là thời gian, mà là một nhịp bước trên hành trình khai phóng bản thân."</div>
+        <p>Là một trong những nghệ sĩ hiếm hoi sở hữu bộ ba vở nhạc kịch thuần Việt — <em>Sóng</em>, <em>Viên đá ngũ sắc</em> và <em>Lửa từ Đất</em> — CNA đã đặt nền móng chuyên nghiệp hóa nhạc kịch Việt Nam.</p>
+      </div>
+      <div class="philosophy-block" style="margin-top:3rem;">
+        <div class="q">"Đi đến tận cùng dân tộc, chúng ta sẽ gặp nhân loại."</div>
+        <div class="attr">— NSƯT Cao Ngọc Ánh · Nhà Sáng lập & Tổng Đạo diễn</div>
+      </div>
+    </div>
+    <div class="values-col fiu" style="animation-delay:.2s">
+      <div class="val-item">
+        <div class="val-n">01</div>
+        <div><div class="val-title">Tầm nhìn</div><div class="val-desc">Trở thành ngọn hải đăng chuyên nghiệp hóa nhạc kịch Việt Nam, xác lập tiêu chuẩn mang tầm quốc tế.</div></div>
+      </div>
+      <div class="val-item">
+        <div class="val-n">02</div>
+        <div><div class="val-title">Sứ mệnh</div><div class="val-desc">Hiện thực hóa "Giấc mơ Nhạc kịch của người Việt" — kiến tạo tác phẩm nguyên bản do nghệ sĩ Việt thực hiện.</div></div>
+      </div>
+      <div class="val-item">
+        <div class="val-n">03</div>
+        <div><div class="val-title">Giá trị cốt lõi</div><div class="val-desc">Bản sắc Việt · Sáng tạo tiên phong · Cảm xúc chân thực · Di sản & Khát vọng · Ê-kíp tinh hoa.</div></div>
+      </div>
+      <div class="val-item">
+        <div class="val-n">04</div>
+        <div><div class="val-title">Triết lý</div><div class="val-desc">"Đi đến tận cùng dân tộc, chúng ta sẽ gặp nhân loại" — kim chỉ nam dẫn dắt mọi tác phẩm.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTIONS -->
+<section id="productions">
+  <div class="inner-pad">
+    <div class="s-num">02 — Tác phẩm</div>
+    <h2 class="s-title">Những vở nhạc kịch<br><em>những giấc mơ sân khấu</em></h2>
+  </div>
+  <div class="prod-scroll" id="prodScroll">
+    <div class="prod-slide">
+      <img src="images/Sóng.jpg" alt="Sóng">
+      <div class="prod-slide-overlay">
+        <div class="prod-num">01</div>
+        <div class="prod-name">Sóng</div>
+        <div class="prod-year">2021 – 2022</div>
+        <div class="prod-desc">Tái hiện cuộc đời nữ thi sĩ Xuân Quỳnh. Cột mốc chuyên nghiệp hóa nhạc kịch Việt Nam.</div>
+        <div class="prod-badge">Nhạc kịch thuần Việt</div>
+      </div>
+    </div>
+    <div class="prod-slide">
+      <img src="images/Viên_Đá_Ngũ_Sắc.jpg" alt="Viên Đá Ngũ Sắc">
+      <div class="prod-slide-overlay">
+        <div class="prod-num">02</div>
+        <div class="prod-name">Viên Đá Ngũ Sắc</div>
+        <div class="prod-year">2023</div>
+        <div class="prod-desc">Hành trình 17 năm của "chú lính chì" Thiện Nhân — biểu tượng tình mẫu tử.</div>
+        <div class="prod-badge">Nhạc kịch thuần Việt</div>
+      </div>
+    </div>
+    <div class="prod-slide">
+      <img src="images/Lửa_Từ_Đất.jpg" alt="Lửa Từ Đất">
+      <div class="prod-slide-overlay">
+        <div class="prod-num">03</div>
+        <div class="prod-name">Lửa Từ Đất</div>
+        <div class="prod-year">2024</div>
+        <div class="prod-desc">Bản anh hùng ca cách mạng. Giải Bùi Xuân Phái. Top 5 Tinh hoa sân khấu Việt.</div>
+        <div class="prod-badge">🏆 Giải Bùi Xuân Phái</div>
+      </div>
+    </div>
+    <div class="prod-slide">
+      <img src="images/Giấc_Mơ_Nàng_Tiên_Cá.jpg" alt="Giấc Mơ Nàng Tiên Cá">
+      <div class="prod-slide-overlay">
+        <div class="prod-num">04</div>
+        <div class="prod-name">Giấc Mơ Nàng Tiên Cá</div>
+        <div class="prod-year">2018</div>
+        <div class="prod-desc">Sân khấu công nghệ 5D Hologram. Việt hóa cổ tích Hans Christian Andersen.</div>
+        <div class="prod-badge">Nhạc kịch thiếu nhi</div>
+      </div>
+    </div>
+    <div class="prod-slide">
+      <img src="images/Công_Chúa_Tóc_Mây.jpg" alt="Công Chúa Tóc Mây">
+      <div class="prod-slide-overlay">
+        <div class="prod-num">05</div>
+        <div class="prod-name">Công Chúa Tóc Mây</div>
+        <div class="prod-year">2025 – 2027</div>
+        <div class="prod-desc">Tour diễn xuyên Việt mang nghệ thuật đến đồng bào dân tộc thiểu số.</div>
+        <div class="prod-badge">♥ Dự án cộng đồng</div>
+      </div>
+    </div>
+    <div class="prod-upcoming" style="animation-delay:.5s">
+      <div style="width:40px;height:1px;background:var(--teal);"></div>
+      <div class="prod-upcoming-date">Tháng 10 · 2026</div>
+      <div class="prod-upcoming-title">"Hà Nội,<br>Khúc Chuyển Mùa"</div>
+      <div class="prod-upcoming-date" style="color:rgba(255,255,255,.2);">Nhà hát Hồ Gươm</div>
+    </div>
+  </div>
+  <div class="prod-scroll-hint">Kéo để xem thêm</div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="s-num">03 — Đội ngũ</div>
+  <div class="team-intro-grid">
+    <div>
+      <h2 class="s-title">Những người<br><em>kiến tạo</em><br>giấc mơ</h2>
+    </div>
+    <div style="padding-top:1rem;">
+      <p style="font-size:.95rem;color:var(--muted);line-height:1.9;">Đội ngũ CNA Creative Arts là tập hợp những nghệ sĩ, nhà sản xuất và quản lý tài năng — cùng chung một khát vọng đưa nhạc kịch Việt Nam vươn tầm thế giới.</p>
+      <div class="rule-red"></div>
+    </div>
+  </div>
+  <!-- Founders -->
+  <div class="team-founders fiu">
+    <div class="tmember">
+      <img class="tmember-img" src="images/NSƯT_Cao_Ngọc_Ánh.jpg" alt="NSƯT Cao Ngọc Ánh" style="filter:grayscale(10%);">
+      <div class="tmember-info">
+        <div class="tmember-role">Nhà Sáng lập · Tổng Đạo diễn</div>
+        <div class="tmember-name">NSƯT Cao Ngọc Ánh</div>
+        <div class="tmember-desc">Phó GĐ Nhà hát Tuổi Trẻ VN. Tiên phong nhạc kịch thuần Việt.</div>
+      </div>
+    </div>
+    <div class="tmember">
+      <img class="tmember-img" src="images/Nguyễn_Sơn_Vũ.jpg" alt="Nguyễn Sơn Vũ">
+      <div class="tmember-info">
+        <div class="tmember-role">Giám đốc · Cố vấn Sáng tạo</div>
+        <div class="tmember-name">Nguyễn Sơn Vũ</div>
+        <div class="tmember-desc">Tốt nghiệp ESP Entertainment Osaka. Chuyên gia âm nhạc & biểu diễn.</div>
+      </div>
+    </div>
+    <div class="tmember">
+      <img class="tmember-img" src="images/Trần_Tuấn_Linh.jpg" alt="Trần Tuấn Linh">
+      <div class="tmember-info">
+        <div class="tmember-role">Quản trị Tài chính</div>
+        <div class="tmember-name">Trần Tuấn Linh</div>
+        <div class="tmember-desc">Cử nhân kép Tài chính & QTKD. Đào tạo ACCA.</div>
+      </div>
+    </div>
+  </div>
+  <!-- Support team -->
+  <div class="team-support fiu" style="animation-delay:.2s;margin-top:2px;">
+    <div class="tmember tmember-sm">
+      <img class="tmember-img" src="images/Trần_Quốc_Việt.jpg" alt="Trần Quốc Việt">
+      <div class="tmember-info">
+        <div class="tmember-role">Diễn viên · Stage Manager</div>
+        <div class="tmember-name">Trần Quốc Việt</div>
+        <div class="tmember-desc">Thủ khoa ĐH Sân khấu Điện ảnh HN.</div>
+      </div>
+    </div>
+    <div class="tmember tmember-sm">
+      <img class="tmember-img" src="images/Nguyễn_Trung_Hiếu.jpg" alt="Nguyễn Trung Hiếu">
+      <div class="tmember-info">
+        <div class="tmember-role">Diễn viên · Dance Captain</div>
+        <div class="tmember-name">Nguyễn Trung Hiếu</div>
+        <div class="tmember-desc">Lord Farquaad (Shrek), Mad Hatter.</div>
+      </div>
+    </div>
+    <div class="tmember tmember-sm">
+      <img class="tmember-img" src="images/Phan_Thanh_Hương.jpg" alt="Phan Thanh Hương">
+      <div class="tmember-info">
+        <div class="tmember-role">Phụ trách Sản xuất</div>
+        <div class="tmember-name">Phan Thanh Hương</div>
+        <div class="tmember-desc">Điều phối sản xuất & logistics.</div>
+      </div>
+    </div>
+    <div class="tmember tmember-sm">
+      <img class="tmember-img" src="images/Bùi_Minh_Đạo.jpg" alt="Bùi Minh Đạo">
+      <div class="tmember-info">
+        <div class="tmember-role">Đạo diễn Âm nhạc</div>
+        <div class="tmember-name">Bùi Minh Đạo</div>
+        <div class="tmember-desc">Nhạc sĩ, soạn nhạc cho sân khấu.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="s-num">04 — Dịch vụ</div>
+  <h2 class="s-title">Những gì<br><em>chúng tôi kiến tạo</em></h2>
+  <div class="svc-grid">
+    <div class="svc-card fiu">
+      <div class="svc-img-wrap"><img src="images/Ươm_Mầm_Tài_Năng.jpg" alt="Ươm Mầm Tài Năng"></div>
+      <div class="svc-body">
+        <div class="svc-n">01</div>
+        <div class="svc-title">Ươm Mầm Tài Năng</div>
+        <div class="svc-sub">Khóa học nhạc kịch thiếu nhi</div>
+        <div class="svc-desc">Dành cho trẻ 7–15 tuổi với 30 buổi theo phương pháp "Kiềng ba chân": Pantomime – Thanh nhạc – Vũ đạo. Nuôi dưỡng trí tuệ cảm xúc và sự tự tin từ bên trong.</div>
+        <div class="svc-tags"><span class="svc-tag">7–15 tuổi</span><span class="svc-tag">30 buổi</span><span class="svc-tag">EQ</span><span class="svc-tag">Biểu diễn</span></div>
+      </div>
+    </div>
+    <div class="svc-card fiu" style="animation-delay:.15s">
+      <div class="svc-img-wrap"><img src="images/Bản_Thể_Tỏa_Sáng.jpg" alt="Bản Thể Tỏa Sáng"></div>
+      <div class="svc-body">
+        <div class="svc-n">02</div>
+        <div class="svc-title">Bản Thể Tỏa Sáng</div>
+        <div class="svc-sub">Khóa học nhạc kịch người lớn</div>
+        <div class="svc-desc">Hành trình 4 giai đoạn: Chạm → Mở → Thăng hoa → Rực rỡ. Khai phóng khí chất và làm chủ thanh âm, ngôn ngữ hình thể qua nghệ thuật nhạc kịch.</div>
+        <div class="svc-tags"><span class="svc-tag">Người lớn</span><span class="svc-tag">4 giai đoạn</span><span class="svc-tag">Kỹ năng mềm</span></div>
+      </div>
+    </div>
+    <div class="svc-card fiu" style="animation-delay:.3s">
+      <div class="svc-img-placeholder">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><rect x="24" y="48" width="32" height="22" rx="2" fill="#E8E0D4"/><rect x="24" y="45" width="32" height="6" rx="1" fill="#00B8C0" opacity=".3"/><rect x="14" y="56" width="52" height="14" rx="2" fill="#E8E0D4" opacity=".7"/><rect x="14" y="53" width="52" height="6" rx="1" fill="#00B8C0" opacity=".2"/><path d="M40 8 L45 22 L60 22 L48 31 L53 46 L40 36 L27 46 L32 31 L20 22 L35 22Z" fill="#00B8C0" opacity=".25"/><path d="M40 8 L45 22 L60 22 L48 31 L53 46 L40 36 L27 46 L32 31 L20 22 L35 22Z" stroke="#00B8C0" stroke-width="1" fill="none" opacity=".5"/></svg>
+      </div>
+      <div class="svc-body">
+        <div class="svc-n">03</div>
+        <div class="svc-title">Sản Xuất Sự Kiện</div>
+        <div class="svc-sub">Nghệ thuật & Corporate Events</div>
+        <div class="svc-desc">Mang tư duy dàn dựng nhạc kịch vào từng sự kiện: Corporate Events, School Tour, Dự án Cộng đồng, Sự kiện Nghệ thuật Cấp Quốc gia.</div>
+        <div class="svc-tags"><span class="svc-tag">Corporate</span><span class="svc-tag">School Tour</span><span class="svc-tag">Quốc gia</span></div>
+      </div>
+    </div>
+    <div class="svc-card fiu" style="animation-delay:.45s">
+      <div class="svc-img-wrap"><img src="images/The_ĐÌNH_Studio.jpg" alt="The ĐÌNH Studio"></div>
+      <div class="svc-body">
+        <div class="svc-n">04</div>
+        <div class="svc-title">The ĐÌNH Studio</div>
+        <div class="svc-sub">Photobooth & Không gian sáng tạo</div>
+        <div class="svc-desc">Nơi văn hóa Việt Nam truyền thống gặp gỡ nghệ thuật đương đại — tạo ra những khoảnh khắc mang đậm bản sắc và đầy cảm xúc.</div>
+        <div class="svc-tags"><span class="svc-tag">Photobooth</span><span class="svc-tag">Studio</span><span class="svc-tag">Nghệ thuật</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="s-num" style="color:var(--teal);">05 — Lộ trình</div>
+  <h2 class="s-title">Dự án &amp; Tầm nhìn<br><em>2026</em></h2>
+  <div class="road-grid">
+    <div class="fiu">
+      <div class="road-head">Ngắn hạn · 2026</div>
+      <div class="tl">
+        <div class="tli"><div class="tdate">25/05 – 05/06/2026</div><div class="ttitle">Mùa Hè Diệu Kỳ</div><div class="tdesc">Tái diễn "Công chúa Tóc Mây" tại Rạp Công nhân – Tràng Tiền, Hà Nội.</div></div>
+        <div class="tli"><div class="tdate">08/08/2026</div><div class="ttitle">Tỏa Sáng Tài Năng</div><div class="tdesc">Đêm công diễn báo cáo cuối kỳ "Ươm mầm tài năng" tại Rạp Công nhân.</div></div>
+        <div class="tli"><div class="tdate">Tháng 10/2026</div><div class="ttitle">Bản Tình Ca Mùa Thu</div><div class="tdesc">Ra mắt "Hà Nội, khúc chuyển mùa" tại Nhà hát Hồ Gươm.</div></div>
+        <div class="tli"><div class="tdate">Giáng sinh 2026</div><div class="ttitle">Cabaret – Nhạc Kịch Kinh Điển</div><div class="tdesc">Chương trình nghệ thuật Giáng Sinh & Năm mới tại Rạp Công nhân.</div></div>
+      </div>
+    </div>
+    <div class="fiu" style="animation-delay:.2s">
+      <div class="road-head">Dài hạn · Tầm nhìn chiến lược</div>
+      <div class="strategy-item">
+        <div class="strat-n">A</div>
+        <div><div class="strat-title">Sân khấu Đại chúng Thủ đô</div><div class="strat-desc">Kết hợp biểu diễn với tour du lịch Hà Nội — biến nhạc kịch thành sản phẩm văn hóa–du lịch mũi nhọn.</div></div>
+      </div>
+      <div class="strategy-item">
+        <div class="strat-n">B</div>
+        <div><div class="strat-title">Nhạc Kịch Lịch Sử & Đương Đại</div><div class="strat-desc">Đầu tư tác phẩm khai thác lịch sử hào hùng và tình yêu Hà Nội qua lăng kính thế hệ trẻ.</div></div>
+      </div>
+      <div class="strategy-item">
+        <div class="strat-n">C</div>
+        <div><div class="strat-title">Nhạc Kịch Thiếu Nhi Thuần Việt</div><div class="strat-desc">Kiến tạo vở diễn từ cốt truyện Việt Nam — nuôi dưỡng tâm hồn trẻ thơ bằng văn hóa bản địa.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="s-num">06 — Liên hệ</div>
+  <h2 class="s-title">Cùng nhau<br><em>kiến tạo</em></h2>
+  <div class="contact-layout">
+    <div class="fiu">
+      <p>Dù bạn là phụ huynh tìm môi trường nghệ thuật cho con, cá nhân muốn khai phá bản thân, hay doanh nghiệp cần sự kiện đẳng cấp — CNA Creative Arts luôn sẵn sàng đồng hành.</p>
+      <div class="cdet"><div><div class="cdet-label">Địa chỉ</div><div class="cdet-val">Hà Nội, Việt Nam</div></div></div>
+      <div class="cdet"><div><div class="cdet-label">Chuyên môn</div><div class="cdet-val">Musical Theater · Sự kiện · Đào tạo</div></div></div>
+      <div class="cdet"><div><div class="cdet-label">Sắp tới gần nhất</div><div class="cdet-val">Mùa Hè Diệu Kỳ – 25/05/2026</div></div></div>
+      <div style="margin-top:2.5rem;padding:2.5rem;background:var(--ink);position:relative;overflow:hidden;">
+        <div style="font-family:var(--display);font-size:.7rem;font-weight:400;letter-spacing:.25em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem;">Triết lý</div>
+        <div style="font-family:'Be Vietnam Pro',sans-serif;font-style:italic;font-size:1.2rem;color:rgba(255,255,255,.9);line-height:1.75;">"Khi đi đến tận cùng bản sắc dân tộc, nghệ thuật sẽ tự khắc chạm đến những giá trị chung của nhân loại."</div>
+      </div>
+    </div>
+    <div class="fiu" style="animation-delay:.2s">
+      <div class="contact-form">
+        <input type="text" placeholder="Họ và tên">
+        <input type="email" placeholder="Email">
+        <input type="text" placeholder="Chủ đề">
+        <textarea placeholder="Tin nhắn của bạn..."></textarea>
+        <button class="contact-submit" type="button">
+          Gửi tin nhắn
+          <span class="submit-arrow"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div class="ft-logo">
+      <img src="images/CNA_Creative_Arts_2.png" alt="CNA Creative Arts">
+      <div class="ft-tagline">"Nơi nghệ thuật nhạc kịch được thắp sáng bởi tâm hồn Việt."</div>
+    </div>
+    <div class="ft-col"><h5>Tác phẩm</h5><ul>
+      <li><a href="#">Sóng (2021–2022)</a></li>
+      <li><a href="#">Viên Đá Ngũ Sắc (2023)</a></li>
+      <li><a href="#">Lửa Từ Đất (2024)</a></li>
+      <li><a href="#">Công Chúa Tóc Mây</a></li>
+    </ul></div>
+    <div class="ft-col"><h5>Dịch vụ</h5><ul>
+      <li><a href="#">Ươm Mầm Tài Năng</a></li>
+      <li><a href="#">Bản Thể Tỏa Sáng</a></li>
+      <li><a href="#">Sản xuất Sự kiện</a></li>
+      <li><a href="#">The ĐÌNH Studio</a></li>
+    </ul></div>
+    <div class="ft-col"><h5>Sắp tới</h5><ul>
+      <li><a href="#">Mùa Hè Diệu Kỳ – T5/2026</a></li>
+      <li><a href="#">Tỏa Sáng Tài Năng – 08/08</a></li>
+      <li><a href="#">Hà Nội Khúc Chuyển Mùa – T10</a></li>
+      <li><a href="#">Cabaret – Giáng sinh 2026</a></li>
+    </ul></div>
+  </div>
+  <div class="ft-bot">
+    <span>© 2026 CNA Creative Arts · All rights reserved</span>
+    <span>Thiết kế với ♥ cho Nhạc kịch Việt Nam</span>
+  </div>
+</footer>
+
+<button id="btt"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
+
+<script>
+// Custom cursor
+const cur=document.getElementById("cursor"),ring=document.getElementById("cursor-ring");
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+"px";cur.style.top=my+"px";});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+"px";ring.style.top=ry+"px";requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll("a,button").forEach(el=>{
+  el.addEventListener("mouseenter",()=>{cur.style.width="24px";cur.style.height="24px";ring.style.opacity=".15";});
+  el.addEventListener("mouseleave",()=>{cur.style.width="12px";cur.style.height="12px";ring.style.opacity=".5";});
+});
+
+// Hero Slider
+let slideCur=0;
+const slides=document.querySelectorAll(".hero-slide");
+const dots=document.querySelectorAll(".hero-dot");
+function goSlide(n){slides[slideCur].classList.remove("active");dots[slideCur].classList.remove("active");slideCur=n;slides[slideCur].classList.add("active");dots[slideCur].classList.add("active");}
+setInterval(()=>goSlide((slideCur+1)%slides.length),5500);
+
+// Nav
+const nav=document.getElementById("nav"),btt=document.getElementById("btt");
+window.addEventListener("scroll",()=>{
+  nav.classList.toggle("light",window.scrollY>80);
+  btt.classList.toggle("show",window.scrollY>500);
+});
+btt.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+
+// Scroll reveal
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("vis");}),{threshold:.07,rootMargin:"0px 0px -40px 0px"});
+document.querySelectorAll(".fiu").forEach(el=>obs.observe(el));
+
+// Burger
+const burger=document.getElementById("burger"),mmenu=document.getElementById("mmenu");
+burger.addEventListener("click",()=>{burger.classList.toggle("open");mmenu.classList.toggle("open");document.body.style.overflow=mmenu.classList.contains("open")?"hidden":"";});
+document.querySelectorAll(".mlink").forEach(a=>a.addEventListener("click",()=>{burger.classList.remove("open");mmenu.classList.remove("open");document.body.style.overflow="";}));
+
+// Drag scroll for production carousel
+const scroll = document.getElementById("prodScroll");
+if(scroll) {
+  let isDown=false, startX, scrollLeft;
+  scroll.addEventListener("mousedown", e=>{
+    isDown=true; scroll.style.cursor="grabbing";
+    startX=e.pageX-scroll.offsetLeft; scrollLeft=scroll.scrollLeft;
+  });
+  scroll.addEventListener("mouseleave",()=>{isDown=false;scroll.style.cursor="grab";});
+  scroll.addEventListener("mouseup",()=>{isDown=false;scroll.style.cursor="grab";});
+  scroll.addEventListener("mousemove",e=>{
+    if(!isDown)return; e.preventDefault();
+    const x=e.pageX-scroll.offsetLeft;
+    scroll.scrollLeft=scrollLeft-(x-startX)*1.5;
+  });
+  scroll.style.cursor="grab";
+}
+
+</script>
+</body>
+</html>
