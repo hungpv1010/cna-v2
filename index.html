@@ -85,10 +85,35 @@ body:hover #cursor{}
 .mmenu-num{font-size:.65rem;color:var(--teal);letter-spacing:.2em;margin-bottom:.3rem;font-family:var(--display);font-weight:400;}
 
 /* ── HERO SLIDER ── */
+/* ── HERO SLIDER ── */
 #hero{position:relative;height:100vh;min-height:620px;display:flex;align-items:center;overflow:hidden;}
-.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center top;opacity:0;transition:opacity 1.4s ease-in-out;}
-.hero-slide.active{opacity:1;}
-.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,rgba(10,8,6,0.92) 0%,rgba(10,8,6,0.6) 55%,rgba(10,8,6,0.25) 100%);}
+
+/* Cập nhật lại .hero-slide để bọc thẻ img */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s ease-in-out;
+  overflow: hidden;
+}
+.hero-slide.active {
+  opacity: 1;
+}
+/* Thiết lập ảnh hoạt động giống như background-cover */
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Lớp phủ gradient vẫn hoạt động bình thường đè lên trên ảnh */
+.hero-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, rgba(10,8,6,0.92) 0%, rgba(10,8,6,0.6) 55%, rgba(10,8,6,0.25) 100%);
+  pointer-events: none;
+}
 .hero-content{position:relative;z-index:2;max-width:700px;padding:0 60px;}
 .hero-eyebrow{font-family:var(--display);font-size:10px;letter-spacing:0.45em;text-transform:uppercase;color:var(--teal);margin-bottom:18px;opacity:0;animation:fadeUp 1s 0.5s ease forwards;display:flex;align-items:center;gap:14px;}
 .hero-eyebrow::before{content:'';display:block;width:36px;height:1px;background:var(--teal);}
@@ -513,41 +538,44 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
 
 <!-- HERO SLIDER -->
 <section id="hero">
-  <div class="hero-slide active" style="background-image:url('images/hero_slide_7.webp');background-position:center 30%"></div>
-  <div class="hero-slide" style="background-image:url('images/hero_slide_8.webp');background-position:center 40%"></div>
-  <div class="hero-slide" style="background-image:url('images/hero_slide_9.webp');background-position:center center"></div>
-  <div class="hero-slide active" style="background-image:url('images/hero_slide_10.webp');background-position:center 30%"></div>
-  <div class="hero-slide" style="background-image:url('images/hero_slide_11.webp');background-position:center 40%"></div>
-
-  <!--div class="hero-slide active">
-    <picture>
-      <source srcset="/images/hero_slide_4_mobile.webp" media="(max-width: 767px)">
-      <img src="/images/hero_slide_4.webp" alt="Creative Arts Slide 1">
-    </picture>
-  </div>
-  <div class="hero-slide">
-    <picture>
-      <source srcset="/images/hero_slide_5_mobile.webp" media="(max-width: 767px)">
-      <img src="/images/hero_slide_5.webp" alt="Creative Arts Slide 2">
-    </picture>
-  </div>
-  <div class="hero-slide">
-    <picture>
-      <source srcset="/images/hero_slide_6_mobile.webp" media="(max-width: 767px)">
-      <img src="/images/hero_slide_6.webp" alt="Creative Arts Slide 3">
-    </picture>
-</div-->
-
-  <!--div class="hero-content">
-    <p class="hero-eyebrow">Nhạc Kịch Thuần Việt từ 2018</p>
-    <h1 class="hero-title">NƠI<br>GIẤC<br><span>MƠ VIỆT</span><br>CẤT TIẾNG</h1>
-    <p class="hero-subtitle">Kiến tạo nền nhạc kịch thuần Việt — từ bản sắc dân tộc đến khán giả nhân loại</p>
-    <div class="hero-btns">
-      <a href="#productions" class="btn-primary">Khám phá tác phẩm</a>
-      <a href="#about" class="btn-outline">Về chúng tôi</a>
-    </div>
-  </div-->
   
+  <div class="hero-slide active">
+    <picture>
+      <!-- Ảnh cho thiết bị di động (chiều rộng tối đa 767px) -->
+      <source srcset="images/hero_slide_7_mobile.webp" media="(max-width: 767px)">
+      <!-- Ảnh mặc định cho Desktop & các thiết bị lớn hơn -->
+      <img src="images/hero_slide_7.webp" alt="CNA Creative Arts Slide 1" style="object-position: center 30%;">
+    </picture>
+  </div>
+
+  <div class="hero-slide">
+    <picture>
+      <source srcset="images/hero_slide_8_mobile.webp" media="(max-width: 767px)">
+      <img src="images/hero_slide_8.webp" alt="CNA Creative Arts Slide 2" style="object-position: center 40%;">
+    </picture>
+  </div>
+
+  <div class="hero-slide">
+    <picture>
+      <source srcset="images/hero_slide_9_mobile.webp" media="(max-width: 767px)">
+      <img src="images/hero_slide_9.webp" alt="CNA Creative Arts Slide 3" style="object-position: center center;">
+    </picture>
+  </div>
+
+  <div class="hero-slide">
+    <picture>
+      <source srcset="images/hero_slide_10_mobile.webp" media="(max-width: 767px)">
+      <img src="images/hero_slide_10.webp" alt="CNA Creative Arts Slide 4" style="object-position: center 30%;">
+    </picture>
+  </div>
+
+  <div class="hero-slide">
+    <picture>
+      <source srcset="images/hero_slide_11_mobile.webp" media="(max-width: 767px)">
+      <img src="images/hero_slide_11.webp" alt="CNA Creative Arts Slide 5" style="object-position: center 40%;">
+    </picture>
+  </div>
+
   <div class="hero-content">
     <p class="hero-eyebrow">Nhạc Kịch Thuần Việt</p>
     <h1 class="hero-title">CNA<br><span>Creative</span><br>Arts</h1>
@@ -558,6 +586,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
     </div>
   </div>
 
+  <!-- Các nút chấm tròn chuyển slide giữ nguyên... -->
   <div class="hero-dots">
     <div class="hero-dot active" onclick="goSlide(0)"></div>
     <div class="hero-dot" onclick="goSlide(1)"></div>
