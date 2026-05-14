@@ -993,6 +993,7 @@ if(scroll) {
 document.querySelectorAll(".prod-slide[data-pdf]").forEach(slide => {
   slide.addEventListener("click", (e) => {
     // Nếu đang kéo cuộn carousel thì không mở PDF
+    let isDragging = false, startX, scrollLeft;
     if (isDragging) return; 
 
     const pdfUrl = slide.getAttribute("data-pdf");
