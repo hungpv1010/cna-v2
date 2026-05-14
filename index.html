@@ -988,7 +988,7 @@ if(scroll) {
 
 // Lightbox for Vo dien
 // Logic Lightbox PDF
-const lightbox = document.getElementById("pdfLightbox");
+/* const lightbox = document.getElementById("pdfLightbox");
 const pdfViewer = document.getElementById("pdfViewer");
 const closeLightbox = document.querySelector(".close-lightbox");
 const overlay = document.querySelector(".lightbox-overlay");
@@ -1020,6 +1020,26 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && lightbox.classList.contains("active")) {
     handleClose();
   }
+}); */
+
+document.querySelectorAll(".prod-slide[data-pdf]").forEach(slide => {
+  slide.addEventListener("click", (e) => {
+    if (isDragging) return; 
+
+    const pdfUrl = slide.getAttribute("data-pdf");
+    if (pdfUrl) {
+      // Kiểm tra nếu là thiết bị di động (màn hình nhỏ hơn 768px)
+      if (window.innerWidth <= 768) {
+        // Mở thẳng PDF trên tab/cửa sổ mới, hệ điều hành mobile sẽ xử lý rất mượt
+        window.open(pdfUrl, '_blank');
+      } else {
+        // Nếu là PC/Laptop, vẫn mở Lightbox sang trọng
+        pdfViewer.src = pdfUrl;
+        lightbox.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+    }
+  });
 });
 
 </script>
