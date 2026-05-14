@@ -1020,6 +1020,32 @@ document.querySelectorAll(".prod-slide[data-pdf]").forEach(slide => {
   });
 });
 
+// Hàm đóng Lightbox PDF
+function closePdf() {
+  const lightbox = document.getElementById("pdfLightbox");
+  const pdfViewer = document.getElementById("pdfViewer");
+
+  if (lightbox) {
+    // 1. Xóa class active để ẩn lightbox
+    lightbox.classList.remove("active");
+    // 2. Reset src của iframe về trống để dừng tải PDF (tiết kiệm tài nguyên)
+    if (pdfViewer) pdfViewer.src = "";
+    // 3. Cho phép cuộn trang web trở lại
+    document.body.style.overflow = "auto";
+  }
+}
+
+// Thêm logic: Click vào vùng đen bên ngoài nội dung PDF cũng sẽ đóng
+const lightbox = document.getElementById("pdfLightbox");
+if (lightbox) {
+  lightbox.addEventListener("click", (e) => {
+    // Nếu click đúng vào vùng background (chứ không phải nội dung bên trong)
+    if (e.target === lightbox) {
+      closePdf();
+    }
+  });
+}
+
 </script>
 </body>
 </html>
