@@ -414,6 +414,77 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   .prod-slide{flex:0 0 90vw;}
   .hero-title{font-size:38px;}
 }
+
+/* Lightbox Modal */
+.lightbox-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000; /* Cao hơn cả custom cursor */
+  display: none; /* Ẩn mặc định */
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-modal.active {
+  display: flex;
+}
+
+.lightbox-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 8, 6, 0.9); /* Màu Ink với độ trong suốt */
+  backdrop-filter: blur(5px);
+}
+
+.lightbox-content {
+  position: relative;
+  width: 90%;
+  height: 85%;
+  max-width: 1000px;
+  background: #fff;
+  z-index: 10001;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-content iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.close-lightbox {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: var(--teal);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10002;
+  transition: transform 0.2s;
+}
+
+.close-lightbox:hover {
+  transform: scale(1.1) rotate(90deg);
+  background: var(--teal2);
+}
+
+/* Đảm bảo ảnh có thể click */
+.prod-card {
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -565,7 +636,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
     <h2 class="s-title">Những vở nhạc kịch<br><em> giấc mơ sân khấu</em></h2>
   </div>
   <div class="prod-scroll" id="prodScroll">
-    <div class="prod-slide">
+    <div class="prod-slide fiu" data-pdf="/documents/profile-voden-song.pdf">
       <img src="images/song.webp" alt="Sóng">
       <div class="prod-slide-overlay">
         <div class="prod-num">01</div>
@@ -573,6 +644,15 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
         <div class="prod-year">2021 – 2022</div>
         <div class="prod-desc">Sóng - Vở diễn đầu tiên trong cả nước sau đại dịch Covid. Tái hiện cuộc đời nữ thi sĩ Xuân Quỳnh. Cột mốc chuyên nghiệp hóa nhạc kịch Việt Nam.</div>
         <div class="prod-badge">Nhạc kịch thuần Việt</div>
+        <div class="view-profile-hint">👉 Click xem Profile PDF</div>
+      </div>
+    </div>
+    
+    <div id="pdfLightbox" class="lightbox-modal">
+      <div class="lightbox-overlay"></div>
+      <div class="lightbox-content">
+        <button class="close-lightbox" aria-label="Đóng">&times;</button>
+        <iframe id="pdfViewer" src="" frameborder="0"></iframe>
       </div>
     </div>
     <div class="prod-slide">
@@ -905,6 +985,42 @@ if(scroll) {
   });
   scroll.style.cursor="grab";
 }
+
+// Lightbox for Vo dien
+// Logic Lightbox PDF
+const lightbox = document.getElementById("pdfLightbox");
+const pdfViewer = document.getElementById("pdfViewer");
+const closeLightbox = document.querySelector(".close-lightbox");
+const overlay = document.querySelector(".lightbox-overlay");
+
+// Tìm tất cả các phần tử có thuộc tính data-pdf
+document.querySelectorAll("[data-pdf]").forEach(item => {
+  item.addEventListener("click", () => {
+    const pdfUrl = item.getAttribute("data-pdf");
+    if (pdfUrl) {
+      pdfViewer.src = pdfUrl;
+      lightbox.classList.add("active");
+      document.body.style.overflow = "hidden"; // Chặn cuộn trang khi đang xem
+    }
+  });
+});
+
+// Hàm đóng Lightbox
+const handleClose = () => {
+  lightbox.classList.remove("active");
+  pdfViewer.src = ""; // Reset src để dừng tải PDF ngầm
+  document.body.style.overflow = "";
+};
+
+if (closeLightbox) closeLightbox.addEventListener("click", handleClose);
+if (overlay) overlay.addEventListener("click", handleClose);
+
+// Đóng bằng phím ESC
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lightbox.classList.contains("active")) {
+    handleClose();
+  }
+});
 
 </script>
 </body>
