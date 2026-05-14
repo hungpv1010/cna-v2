@@ -986,57 +986,29 @@ if(scroll) {
   scroll.style.cursor="grab";
 }
 
-// Lightbox for Vo dien
-// Logic Lightbox PDF
-/* const lightbox = document.getElementById("pdfLightbox");
-const pdfViewer = document.getElementById("pdfViewer");
-const closeLightbox = document.querySelector(".close-lightbox");
-const overlay = document.querySelector(".lightbox-overlay");
-
-// Tìm tất cả các phần tử có thuộc tính data-pdf
-document.querySelectorAll("[data-pdf]").forEach(item => {
-  item.addEventListener("click", () => {
-    const pdfUrl = item.getAttribute("data-pdf");
-    if (pdfUrl) {
-      pdfViewer.src = pdfUrl;
-      lightbox.classList.add("active");
-      document.body.style.overflow = "hidden"; // Chặn cuộn trang khi đang xem
-    }
-  });
-});
-
-// Hàm đóng Lightbox
-const handleClose = () => {
-  lightbox.classList.remove("active");
-  pdfViewer.src = ""; // Reset src để dừng tải PDF ngầm
-  document.body.style.overflow = "";
-};
-
-if (closeLightbox) closeLightbox.addEventListener("click", handleClose);
-if (overlay) overlay.addEventListener("click", handleClose);
-
-// Đóng bằng phím ESC
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && lightbox.classList.contains("active")) {
-    handleClose();
-  }
-}); */
-
+// Logic mở Profile PDF thông minh
 document.querySelectorAll(".prod-slide[data-pdf]").forEach(slide => {
   slide.addEventListener("click", (e) => {
+    // Nếu đang kéo cuộn carousel thì không mở PDF
     if (isDragging) return; 
 
     const pdfUrl = slide.getAttribute("data-pdf");
     if (pdfUrl) {
-      // Kiểm tra nếu là thiết bị di động (màn hình nhỏ hơn 768px)
+      // KIỂM TRA THIẾT BỊ: Nếu màn hình nhỏ hơn 768px (Mobile/Tablet)
       if (window.innerWidth <= 768) {
-        // Mở thẳng PDF trên tab/cửa sổ mới, hệ điều hành mobile sẽ xử lý rất mượt
+        // Mở thẳng file PDF sang tab mới
+        // Mobile sẽ tự động mở trình xem PDF toàn màn hình cực mượt
         window.open(pdfUrl, '_blank');
       } else {
-        // Nếu là PC/Laptop, vẫn mở Lightbox sang trọng
-        pdfViewer.src = pdfUrl;
-        lightbox.classList.add("active");
-        document.body.style.overflow = "hidden";
+        // Nếu là Máy tính (Desktop): Mở Lightbox như cũ
+        const pdfViewer = document.getElementById("pdfViewer");
+        const lightbox = document.getElementById("pdfLightbox");
+        
+        if (pdfViewer && lightbox) {
+          pdfViewer.src = pdfUrl;
+          lightbox.classList.add("active");
+          document.body.style.overflow = "hidden";
+        }
       }
     }
   });
