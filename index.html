@@ -971,43 +971,45 @@ burger.addEventListener("click",()=>{burger.classList.toggle("open");mmenu.class
 document.querySelectorAll(".mlink").forEach(a=>a.addEventListener("click",()=>{burger.classList.remove("open");mmenu.classList.remove("open");document.body.style.overflow="";}));
 
 // Drag scroll for production carousel
+// 1. Sửa lại đoạn code Drag Scroll phía trên để gán giá trị cho isDragging
 const scroll = document.getElementById("prodScroll");
+let isDown = false;
+let isDragging = false; // Khai báo isDragging ở phạm vi bên ngoài để dùng chung
+let startX, scrollLeft;
+
 if(scroll) {
-  let isDown=false, startX, scrollLeft;
-  let isDragging = false, startX, scrollLeft;
-  scroll.addEventListener("mousedown", e=>{
-    isDown=true; scroll.style.cursor="grabbing";
-    startX=e.pageX-scroll.offsetLeft; scrollLeft=scroll.scrollLeft;
+  scroll.addEventListener("mousedown", e => {
+    isDown = true;
+    isDragging = false; // Reset trạng thái khi mới nhấn chuột
+    startX = e.pageX - scroll.offsetLeft;
+    scrollLeft = scroll.scrollLeft;
   });
-  scroll.addEventListener("mouseleave",()=>{isDown=false;scroll.style.cursor="grab";});
-  scroll.addEventListener("mouseup",()=>{isDown=false;scroll.style.cursor="grab";});
-  scroll.addEventListener("mousemove",e=>{
-    if(!isDown)return; e.preventDefault();
-    const x=e.pageX-scroll.offsetLeft;
-    scroll.scrollLeft=scrollLeft-(x-startX)*1.5;
+
+  scroll.addEventListener("mousemove", e => {
+    if(!isDown) return;
+    isDragging = true; // Nếu chuột di chuyển trong khi nhấn, xác định là đang kéo
+    e.preventDefault();
+    const x = e.pageX - scroll.offsetLeft;
+    scroll.scrollLeft = scrollLeft - (x - startX) * 1.5;
   });
-  scroll.style.cursor="grab";
+
+  scroll.addEventListener("mouseup", () => { isDown = false; });
+  scroll.addEventListener("mouseleave", () => { isDown = false; });
 }
 
-// Logic mở Profile PDF thông minh
+// 2. Sửa đoạn code Click mở PDF (Bỏ dòng let gây lỗi)
 document.querySelectorAll(".prod-slide[data-pdf]").forEach(slide => {
   slide.addEventListener("click", (e) => {
-    // Nếu đang kéo cuộn carousel thì không mở PDF
-    let isDragging = false, startX, scrollLeft;
+    // Nếu đang kéo (isDragging = true) thì thoát hàm, không mở PDF
     if (isDragging) return; 
 
     const pdfUrl = slide.getAttribute("data-pdf");
     if (pdfUrl) {
-      // KIỂM TRA THIẾT BỊ: Nếu màn hình nhỏ hơn 768px (Mobile/Tablet)
       if (window.innerWidth <= 768) {
-        // Mở thẳng file PDF sang tab mới
-        // Mobile sẽ tự động mở trình xem PDF toàn màn hình cực mượt
         window.open(pdfUrl, '_blank');
       } else {
-        // Nếu là Máy tính (Desktop): Mở Lightbox như cũ
         const pdfViewer = document.getElementById("pdfViewer");
         const lightbox = document.getElementById("pdfLightbox");
-        
         if (pdfViewer && lightbox) {
           pdfViewer.src = pdfUrl;
           lightbox.classList.add("active");
