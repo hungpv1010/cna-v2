@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>CNA Creative Arts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@200;300;400;700;900&family=Noto+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!--link rel="preload" as="image" href="/images/hero_slide_4.webp" fetchpriority="high"-->
+<link rel="preload" as="image" href="/images/hero_slide_4_mobile.webp" media="(max-width: 767px)" fetchpriority="high">
+<link rel="preload" as="image" href="/images/hero_slide_7.webp" media="(min-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="/images/hero_slide_8.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/images/hero_slide_9.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/images/hero_slide_10.webp" fetchpriority="high">
+<link rel="preload" as="image" href="/images/hero_slide_11.webp" fetchpriority="high">
 <style>
 /* ── RESET & ROOT ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -15,9 +23,9 @@
   --cream:#FAF7F2;--cream2:#F2EDE5;--cream3:#E8E0D4;
   --gold:#8B6914;--gold2:#C9A84C;
   --text:#1A1410;--muted:#7A6F65;
-  --serif:"Libre Baskerville",Georgia,serif;
-  --display:"Unbounded",sans-serif;
-  --body:"Be Vietnam Pro",sans-serif;
+  --serif:'Playfair Display','Georgia',serif;
+  --display:'Playfair Display','Georgia',serif;
+  --body:'Lora','Georgia',serif;
 }
 html{scroll-behavior:smooth;font-size:16px;}
 body{font-family:var(--body);background:var(--cream);color:var(--text);overflow-x:hidden;cursor:none;}
@@ -211,7 +219,7 @@ section{padding:8rem 8vw;}
 .prod-slide:hover img{transform:scale(1.05);filter:brightness(.55);}
 .prod-slide-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(10,8,6,1) 0%,rgba(10,8,6,.5) 40%,transparent 75%);
+  background:linear-gradient(to top,rgba(10,8,6,1) 0%,rgba(10,8,6,.5) 40%,transparent 35%);
   display:flex;flex-direction:column;justify-content:flex-end;
   padding:2.5rem 2rem;
 }
@@ -351,7 +359,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
 .ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem;}
 .ft-logo img{height:80px;object-fit:contain;margin-bottom:1.2rem;}
 .ft-tagline{font-family:"Be Vietnam Pro",sans-serif;font-style:italic;font-size:.95rem;color:rgba(255,255,255,.48);line-height:1.75;max-width:260px;}
-.ft-col h5{font-family:var(--display);font-size:.55rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);margin-bottom:1.3rem;}
+.ft-col h5{font-family:var(--display);font-size:.85rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:var(--teal);margin-bottom:1.3rem;}
 .ft-col ul{list-style:none;}
 .ft-col li{margin-bottom:.6rem;}
 .ft-col a{font-size:.85rem;color:rgba(255,255,255,.48);text-decoration:none;font-family:"Be Vietnam Pro",sans-serif;transition:color .3s;}
@@ -406,6 +414,77 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   .prod-slide{flex:0 0 90vw;}
   .hero-title{font-size:38px;}
 }
+
+/* Lightbox Modal */
+.lightbox-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000; /* Cao hơn cả custom cursor */
+  display: none; /* Ẩn mặc định */
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-modal.active {
+  display: flex;
+}
+
+.lightbox-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 8, 6, 0.9); /* Màu Ink với độ trong suốt */
+  backdrop-filter: blur(5px);
+}
+
+.lightbox-content {
+  position: relative;
+  width: 90%;
+  height: 85%;
+  max-width: 1000px;
+  background: #fff;
+  z-index: 10001;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-content iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.close-lightbox {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: var(--teal);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10002;
+  transition: transform 0.2s;
+}
+
+.close-lightbox:hover {
+  transform: scale(1.1) rotate(90deg);
+  background: var(--teal2);
+}
+
+/* Đảm bảo ảnh có thể click */
+.prod-card {
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -438,9 +517,30 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
 
 <!-- HERO SLIDER -->
 <section id="hero">
-  <div class="hero-slide active" style="background-image:url('images/hero_slide_1.jpg');background-position:center 30%"></div>
-  <div class="hero-slide" style="background-image:url('images/hero_slide_2.jpg');background-position:center 40%"></div>
-  <div class="hero-slide" style="background-image:url('images/hero_slide_3.jpg');background-position:center center"></div>
+  <div class="hero-slide active" style="background-image:url('images/hero_slide_7.webp');background-position:center 30%"></div>
+  <div class="hero-slide" style="background-image:url('images/hero_slide_8.webp');background-position:center 40%"></div>
+  <div class="hero-slide" style="background-image:url('images/hero_slide_9.webp');background-position:center center"></div>
+  <div class="hero-slide active" style="background-image:url('images/hero_slide_10.webp');background-position:center 30%"></div>
+  <div class="hero-slide" style="background-image:url('images/hero_slide_11.webp');background-position:center 40%"></div>
+
+  <!--div class="hero-slide active">
+    <picture>
+      <source srcset="/images/hero_slide_4_mobile.webp" media="(max-width: 767px)">
+      <img src="/images/hero_slide_4.webp" alt="Creative Arts Slide 1">
+    </picture>
+  </div>
+  <div class="hero-slide">
+    <picture>
+      <source srcset="/images/hero_slide_5_mobile.webp" media="(max-width: 767px)">
+      <img src="/images/hero_slide_5.webp" alt="Creative Arts Slide 2">
+    </picture>
+  </div>
+  <div class="hero-slide">
+    <picture>
+      <source srcset="/images/hero_slide_6_mobile.webp" media="(max-width: 767px)">
+      <img src="/images/hero_slide_6.webp" alt="Creative Arts Slide 3">
+    </picture>
+</div-->
 
   <!--div class="hero-content">
     <p class="hero-eyebrow">Nhạc Kịch Thuần Việt từ 2018</p>
@@ -494,7 +594,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
 <!-- ABOUT -->
 <section id="about">
   <div class="s-num">01 — Giới thiệu</div>
-  <h2 class="s-title">Nghệ thuật<br><em>vì con người</em></h2>
+  <h2 class="s-title">Nghệ thuật<br><em>vị nhân sinh</em></h2>
   <div class="about-layout">
     <div class="about-text-col fiu">
       <div class="about-body">
@@ -533,21 +633,30 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
 <section id="productions">
   <div class="inner-pad">
     <div class="s-num">02 — Tác phẩm</div>
-    <h2 class="s-title">Những vở nhạc kịch<br><em>những giấc mơ sân khấu</em></h2>
+    <h2 class="s-title">Những vở nhạc kịch<br><em> giấc mơ sân khấu</em></h2>
   </div>
   <div class="prod-scroll" id="prodScroll">
-    <div class="prod-slide">
-      <img src="images/Sóng.jpg" alt="Sóng">
+    <div class="prod-slide fiu" data-pdf="/documents/profile-voden-song.pdf">
+      <img src="images/song.webp" alt="Sóng">
       <div class="prod-slide-overlay">
         <div class="prod-num">01</div>
         <div class="prod-name">Sóng</div>
         <div class="prod-year">2021 – 2022</div>
-        <div class="prod-desc">Tái hiện cuộc đời nữ thi sĩ Xuân Quỳnh. Cột mốc chuyên nghiệp hóa nhạc kịch Việt Nam.</div>
+        <div class="prod-desc">Sóng - Vở diễn đầu tiên trong cả nước sau đại dịch Covid. Tái hiện cuộc đời nữ thi sĩ Xuân Quỳnh. Cột mốc chuyên nghiệp hóa nhạc kịch Việt Nam.</div>
         <div class="prod-badge">Nhạc kịch thuần Việt</div>
+        <div class="view-profile-hint">👉 Click xem Profile PDF</div>
+      </div>
+    </div>
+    
+    <div id="pdfLightbox" class="lightbox-modal">
+      <div class="lightbox-overlay"></div>
+      <div class="lightbox-content">
+        <button class="close-lightbox" aria-label="Đóng">&times;</button>
+        <iframe id="pdfViewer" src="" frameborder="0"></iframe>
       </div>
     </div>
     <div class="prod-slide">
-      <img src="images/Viên_Đá_Ngũ_Sắc.jpg" alt="Viên Đá Ngũ Sắc">
+      <img src="images/viendangusac.webp" alt="Viên Đá Ngũ Sắc">
       <div class="prod-slide-overlay">
         <div class="prod-num">02</div>
         <div class="prod-name">Viên Đá Ngũ Sắc</div>
@@ -557,17 +666,17 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
       </div>
     </div>
     <div class="prod-slide">
-      <img src="images/Lửa_Từ_Đất.jpg" alt="Lửa Từ Đất">
+      <img src="images/luatudat.webp" alt="Lửa Từ Đất">
       <div class="prod-slide-overlay">
         <div class="prod-num">03</div>
         <div class="prod-name">Lửa Từ Đất</div>
-        <div class="prod-year">2024</div>
-        <div class="prod-desc">Bản anh hùng ca cách mạng. Giải Bùi Xuân Phái. Top 5 Tinh hoa sân khấu Việt.</div>
+        <div class="prod-year">2025</div>
+        <div class="prod-desc">Giải thưởng Bùi Xuân Phái - Vì tình yêu Hà Nội & Top 5 Tinh hoa sân khấu Việt.</div>
         <div class="prod-badge">🏆 Giải Bùi Xuân Phái</div>
       </div>
     </div>
     <div class="prod-slide">
-      <img src="images/Giấc_Mơ_Nàng_Tiên_Cá.jpg" alt="Giấc Mơ Nàng Tiên Cá">
+      <img src="images/giacmonangtienca.webp" alt="Giấc Mơ Nàng Tiên Cá">
       <div class="prod-slide-overlay">
         <div class="prod-num">04</div>
         <div class="prod-name">Giấc Mơ Nàng Tiên Cá</div>
@@ -577,7 +686,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
       </div>
     </div>
     <div class="prod-slide">
-      <img src="images/Công_Chúa_Tóc_Mây.jpg" alt="Công Chúa Tóc Mây">
+      <img src="images/congchuatocmay.webp" alt="Công Chúa Tóc Mây">
       <div class="prod-slide-overlay">
         <div class="prod-num">05</div>
         <div class="prod-name">Công Chúa Tóc Mây</div>
@@ -601,7 +710,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   <div class="s-num">03 — Đội ngũ</div>
   <div class="team-intro-grid">
     <div>
-      <h2 class="s-title">Những người<br><em>kiến tạo</em><br>giấc mơ</h2>
+      <h2 class="s-title">Những nghệ sĩ<br><em>kiến tạo</em><br>giấc mơ</h2>
     </div>
     <div style="padding-top:1rem;">
       <p style="font-size:.95rem;color:var(--muted);line-height:1.9;">Đội ngũ CNA Creative Arts là tập hợp những nghệ sĩ, nhà sản xuất và quản lý tài năng — cùng chung một khát vọng đưa nhạc kịch Việt Nam vươn tầm thế giới.</p>
@@ -611,15 +720,15 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   <!-- Founders -->
   <div class="team-founders fiu">
     <div class="tmember">
-      <img class="tmember-img" src="images/NSƯT_Cao_Ngọc_Ánh.jpg" alt="NSƯT Cao Ngọc Ánh" style="filter:grayscale(10%);">
+      <img class="tmember-img" src="images/NSƯT_Cao_Ngọc_Ánh.webp" alt="NSƯT Cao Ngọc Ánh" style="filter:grayscale(10%);">
       <div class="tmember-info">
         <div class="tmember-role">Nhà Sáng lập · Tổng Đạo diễn</div>
         <div class="tmember-name">NSƯT Cao Ngọc Ánh</div>
-        <div class="tmember-desc">Phó GĐ Nhà hát Tuổi Trẻ VN. Tiên phong nhạc kịch thuần Việt.</div>
+        <div class="tmember-desc">Tiên phong nhạc kịch thuần Việt.</div>
       </div>
     </div>
     <div class="tmember">
-      <img class="tmember-img" src="images/Nguyễn_Sơn_Vũ.jpg" alt="Nguyễn Sơn Vũ">
+      <img class="tmember-img" src="images/Nguyễn_Sơn_Vũ.webp" alt="Nguyễn Sơn Vũ">
       <div class="tmember-info">
         <div class="tmember-role">Giám đốc · Cố vấn Sáng tạo</div>
         <div class="tmember-name">Nguyễn Sơn Vũ</div>
@@ -640,7 +749,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
     <div class="tmember tmember-sm">
       <img class="tmember-img" src="images/Trần_Quốc_Việt.jpg" alt="Trần Quốc Việt">
       <div class="tmember-info">
-        <div class="tmember-role">Diễn viên · Stage Manager</div>
+        <div class="tmember-role">Diễn viên/Biên kịch/Cố vấn diễn xuất</div>
         <div class="tmember-name">Trần Quốc Việt</div>
         <div class="tmember-desc">Thủ khoa ĐH Sân khấu Điện ảnh HN.</div>
       </div>
@@ -648,7 +757,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
     <div class="tmember tmember-sm">
       <img class="tmember-img" src="images/Nguyễn_Trung_Hiếu.jpg" alt="Nguyễn Trung Hiếu">
       <div class="tmember-info">
-        <div class="tmember-role">Diễn viên · Dance Captain</div>
+        <div class="tmember-role">Nghệ sĩ nhạc kịch/Biên đạo/Trợ lý đạo diễn</div>
         <div class="tmember-name">Nguyễn Trung Hiếu</div>
         <div class="tmember-desc">Lord Farquaad (Shrek), Mad Hatter.</div>
       </div>
@@ -666,7 +775,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
       <div class="tmember-info">
         <div class="tmember-role">Đạo diễn Âm nhạc</div>
         <div class="tmember-name">Bùi Minh Đạo</div>
-        <div class="tmember-desc">Nhạc sĩ, soạn nhạc cho sân khấu.</div>
+        <div class="tmember-desc">Nhạc sĩ, soạn nhạc</div>
       </div>
     </div>
   </div>
@@ -675,7 +784,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
 <!-- SERVICES -->
 <section id="services">
   <div class="s-num">04 — Dịch vụ</div>
-  <h2 class="s-title">Những gì<br><em>chúng tôi kiến tạo</em></h2>
+  <h2 class="s-title">Những gì<br><em>chúng tôi sáng tạo</em></h2>
   <div class="svc-grid">
     <div class="svc-card fiu">
       <div class="svc-img-wrap"><img src="images/Ươm_Mầm_Tài_Năng.jpg" alt="Ươm Mầm Tài Năng"></div>
@@ -710,10 +819,10 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
       </div>
     </div>
     <div class="svc-card fiu" style="animation-delay:.45s">
-      <div class="svc-img-wrap"><img src="images/The_ĐÌNH_Studio.jpg" alt="The ĐÌNH Studio"></div>
+      <div class="svc-img-wrap"><img src="images/The_ĐÌNH_Studio.jpg" alt="The Dinh & Studio"></div>
       <div class="svc-body">
         <div class="svc-n">04</div>
-        <div class="svc-title">The ĐÌNH Studio</div>
+        <div class="svc-title">The Dinh photobooth & Studio</div>
         <div class="svc-sub">Photobooth & Không gian sáng tạo</div>
         <div class="svc-desc">Nơi văn hóa Việt Nam truyền thống gặp gỡ nghệ thuật đương đại — tạo ra những khoảnh khắc mang đậm bản sắc và đầy cảm xúc.</div>
         <div class="svc-tags"><span class="svc-tag">Photobooth</span><span class="svc-tag">Studio</span><span class="svc-tag">Nghệ thuật</span></div>
@@ -730,8 +839,8 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
     <div class="fiu">
       <div class="road-head">Ngắn hạn · 2026</div>
       <div class="tl">
-        <div class="tli"><div class="tdate">25/05 – 05/06/2026</div><div class="ttitle">Mùa Hè Diệu Kỳ</div><div class="tdesc">Tái diễn "Công chúa Tóc Mây" tại Rạp Công nhân – Tràng Tiền, Hà Nội.</div></div>
-        <div class="tli"><div class="tdate">08/08/2026</div><div class="ttitle">Tỏa Sáng Tài Năng</div><div class="tdesc">Đêm công diễn báo cáo cuối kỳ "Ươm mầm tài năng" tại Rạp Công nhân.</div></div>
+        <div class="tli"><div class="tdate">Tháng 6-7/2026</div><div class="ttitle">Mùa Hè Diệu Kỳ</div><div class="tdesc">Tái diễn "Công chúa Tóc Mây" tại Rạp Công nhân – Tràng Tiền, Hà Nội.</div></div>
+        <div class="tli"><div class="tdate">Tháng 08/2026</div><div class="ttitle">Tỏa Sáng Tài Năng</div><div class="tdesc">Đêm công diễn báo cáo cuối kỳ "Ươm mầm tài năng" tại Rạp Công nhân.</div></div>
         <div class="tli"><div class="tdate">Tháng 10/2026</div><div class="ttitle">Bản Tình Ca Mùa Thu</div><div class="tdesc">Ra mắt "Hà Nội, khúc chuyển mùa" tại Nhà hát Hồ Gươm.</div></div>
         <div class="tli"><div class="tdate">Giáng sinh 2026</div><div class="ttitle">Cabaret – Nhạc Kịch Kinh Điển</div><div class="tdesc">Chương trình nghệ thuật Giáng Sinh & Năm mới tại Rạp Công nhân.</div></div>
       </div>
@@ -749,6 +858,10 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
       <div class="strategy-item">
         <div class="strat-n">C</div>
         <div><div class="strat-title">Nhạc Kịch Thiếu Nhi Thuần Việt</div><div class="strat-desc">Kiến tạo vở diễn từ cốt truyện Việt Nam — nuôi dưỡng tâm hồn trẻ thơ bằng văn hóa bản địa.</div></div>
+      </div>
+      <div class="strategy-item">
+        <div class="strat-n">C</div>
+        <div><div class="strat-title">Múa dân gian dương đại</div><div class="strat-desc">Kiến tạo vở diễn từ cốt truyện Việt Nam — nuôi dưỡng tâm hồn trẻ thơ bằng văn hóa bản địa.</div></div>
       </div>
     </div>
   </div>
@@ -795,7 +908,8 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
       <li><a href="#">Sóng (2021–2022)</a></li>
       <li><a href="#">Viên Đá Ngũ Sắc (2023)</a></li>
       <li><a href="#">Lửa Từ Đất (2024)</a></li>
-      <li><a href="#">Công Chúa Tóc Mây</a></li>
+      <li><a href="#">Công Chúa Tóc Mây (2025-2027)</a></li>
+      <li><a href="#">Giấc mơ nàng tiên cá (2018)</a></li>
     </ul></div>
     <div class="ft-col"><h5>Dịch vụ</h5><ul>
       <li><a href="#">Ươm Mầm Tài Năng</a></li>
@@ -871,6 +985,42 @@ if(scroll) {
   });
   scroll.style.cursor="grab";
 }
+
+// Lightbox for Vo dien
+// Logic Lightbox PDF
+const lightbox = document.getElementById("pdfLightbox");
+const pdfViewer = document.getElementById("pdfViewer");
+const closeLightbox = document.querySelector(".close-lightbox");
+const overlay = document.querySelector(".lightbox-overlay");
+
+// Tìm tất cả các phần tử có thuộc tính data-pdf
+document.querySelectorAll("[data-pdf]").forEach(item => {
+  item.addEventListener("click", () => {
+    const pdfUrl = item.getAttribute("data-pdf");
+    if (pdfUrl) {
+      pdfViewer.src = pdfUrl;
+      lightbox.classList.add("active");
+      document.body.style.overflow = "hidden"; // Chặn cuộn trang khi đang xem
+    }
+  });
+});
+
+// Hàm đóng Lightbox
+const handleClose = () => {
+  lightbox.classList.remove("active");
+  pdfViewer.src = ""; // Reset src để dừng tải PDF ngầm
+  document.body.style.overflow = "";
+};
+
+if (closeLightbox) closeLightbox.addEventListener("click", handleClose);
+if (overlay) overlay.addEventListener("click", handleClose);
+
+// Đóng bằng phím ESC
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lightbox.classList.contains("active")) {
+    handleClose();
+  }
+});
 
 </script>
 </body>
