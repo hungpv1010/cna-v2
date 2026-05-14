@@ -974,6 +974,7 @@ document.querySelectorAll(".mlink").forEach(a=>a.addEventListener("click",()=>{b
 const scroll = document.getElementById("prodScroll");
 if(scroll) {
   let isDown=false, startX, scrollLeft;
+  let isDragging = false, startX, scrollLeft;
   scroll.addEventListener("mousedown", e=>{
     isDown=true; scroll.style.cursor="grabbing";
     startX=e.pageX-scroll.offsetLeft; scrollLeft=scroll.scrollLeft;
