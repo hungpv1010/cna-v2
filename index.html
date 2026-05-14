@@ -552,6 +552,15 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
     display: none;
   }
 }
+@media (max-width: 768px) {
+  #btt {
+    right: 1rem;      /* Giảm từ 2.5rem xuống 1rem (~16px) */
+    bottom: 1.5rem;   /* Đẩy xuống thấp hơn một chút để không che nội dung */
+    width: 44px;      /* Thu nhỏ nhẹ kích thước nút để thanh thoát hơn */
+    height: 44px;
+    border-radius: 4px; /* Nếu muốn bo góc nhẹ đồng bộ với prod-slide */
+  }
+}
 </style>
 </head>
 <body>
