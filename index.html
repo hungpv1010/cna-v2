@@ -801,6 +801,10 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   <!-- Founders -->
   <div class="team-founders fiu">
     <div class="tmember">
+      onclick="openProfile(this)" 
+      data-name="NSƯT Cao Ngọc Ánh" 
+      data-role="Nhà Sáng lập · Tổng Đạo diễn" 
+      data-desc="NSƯT Cao Ngọc Ánh là người tiên phong trong việc chuyên nghiệp hóa nhạc kịch tại Việt Nam...">
       <img class="tmember-img" src="images/caongocanh.webp" alt="NSƯT Cao Ngọc Ánh" style="filter:grayscale(10%);">
       <div class="tmember-info">
         <div class="tmember-role">Nhà Sáng lập · Tổng Đạo diễn</div>
@@ -1140,6 +1144,53 @@ if (lightbox) {
   });
 }
 
+// Hàm mở Profile Member
+function openProfile(el) {
+  const modal = document.getElementById('profileLightbox');
+  const pdfViewer = document.getElementById('pdfViewer'); // Đảm bảo PDF không bị hiện cùng lúc
+  
+  // Lấy dữ liệu từ thuộc tính data- của phần tử được click
+  const img = el.querySelector('img').src;
+  const name = el.getAttribute('data-name');
+  const role = el.getAttribute('data-role');
+  const desc = el.getAttribute('data-desc');
+
+  // Đổ dữ liệu vào giao diện Lightbox
+  document.getElementById('p-img').src = img;
+  document.getElementById('p-name').innerText = name;
+  document.getElementById('p-role').innerText = role;
+  document.getElementById('p-desc').innerText = desc || "Thông tin đang được cập nhật...";
+
+  // Hiển thị Modal
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = "hidden";
+  }
+}
+
+// Hàm đóng Profile
+function closeProfile() {
+  const modal = document.getElementById('profileLightbox');
+  if (modal) {
+    modal.classList.remove('active');
+    // Chỉ reset overflow nếu không có cái PDF nào đang mở
+    const pdfLightbox = document.getElementById('pdfLightbox');
+    if (!pdfLightbox || !pdfLightbox.classList.contains('active')) {
+      document.body.style.overflow = "auto";
+    }
+  }
+}
+
+// Gán sự kiện Click cho vùng bên ngoài (Overlay) để đóng Profile
+const profileModal = document.getElementById('profileLightbox');
+if (profileModal) {
+  profileModal.addEventListener('click', (e) => {
+    // Nếu click vào chính cái Modal (vùng tối) hoặc nút đóng
+    if (e.target === profileModal || e.target.classList.contains('lightbox-overlay')) {
+      closeProfile();
+    }
+  });
+}
 </script>
 </body>
 </html>
