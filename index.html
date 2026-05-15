@@ -581,56 +581,61 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
     flex-direction: column; /* Mobile mặc định */
 }
 
-/* Xử lý ảnh */
+/* --- Khung chứa ảnh --- */
 .team-modal-img {
     width: 100%;
-    background: #1a1a1a; /* Nền tối để tôn ảnh nếu ảnh không khít khung */
+    background: #1a1a1a;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Để ảnh bắt đầu từ trên xuống */
     justify-content: center;
+    overflow: hidden;
+    /* Thiết lập chiều cao mặc định cho mobile để không bị mất ảnh */
+    height: 400px; 
+    height: 100vw; /* Chiều cao bằng chiều rộng màn hình để tạo hình vuông */
+    max-height: 500px;
 }
 
 .team-modal-img img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Mobile: Phủ kín */
+    object-fit: cover; /* Mobile: Phủ kín khung vuông */
+    object-position: top center; /* Luôn lấy từ đầu nghệ sĩ xuống */
+    display: block;
+}
+
+/* --- Tối ưu cho Desktop --- */
+@media (min-width: 992px) {
+    .team-modal-content {
+        flex-direction: row;
+        max-height: 85vh;
+    }
+
+    .team-modal-img {
+        flex: 0 0 45%; 
+        height: auto; /* Bỏ chiều cao cố định của mobile */
+        max-height: 85vh;
+        align-items: center; /* Căn giữa ảnh theo chiều dọc trên PC */
+    }
+
+    .team-modal-img img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain; /* PC: HIỆN TOÀN BỘ ẢNH, không bị cắt */
+        background: #1a1a1a;
+    }
+
+    .team-modal-info {
+        flex: 1;
+        overflow-y: auto;
+        max-height: 85vh;
+        padding: 3rem;
+    }
 }
 
 /* Xử lý Text */
 .team-modal-info {
     padding: 2rem;
     background: #fff;
-}
-
-/* --- TỐI ƯU CHO DESKTOP --- */
-@media (min-width: 992px) {
-    .team-modal-content {
-        max-height: 85vh; /* Giới hạn chiều cao modal không quá màn hình */
-        flex-direction: row;
-    }
-
-    .team-modal-grid {
-        flex-direction: row;
-        width: 100%;
-    }
-
-    .team-modal-img {
-        flex: 0 0 45%; /* Ảnh chiếm 45% */
-        max-height: 85vh;
-    }
-
-    .team-modal-img img {
-        object-fit: contain; /* HIỆN HẾT ẢNH không bị cắt */
-        height: 100%;
-        width: 100%;
-    }
-
-    .team-modal-info {
-        flex: 1;
-        overflow-y: auto; /* Chỉ cuộn phần chữ nếu chữ quá dài */
-        max-height: 85vh;
-        padding: 3rem;
-    }
 }
 
 /* NÚT CLOSE ĐẶT LẠI VỊ TRÍ ĐỂ DỄ THẤY */
