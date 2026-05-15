@@ -575,21 +575,58 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   box-shadow: 0 30px 60px rgba(0,0,0,0.4);
 }
 
+/* Layout chung cho Modal */
 .team-modal-grid {
-  display: grid;
-  grid-template-columns: 40% 1fr;
+    display: flex;
+    flex-direction: column; /* Mặc định là dọc cho mobile */
+    gap: 20px;
+}
+
+/* Khung chứa ảnh - Ép về hình vuông */
+.team-modal-img {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Ép ảnh luôn vuông */
+    overflow: hidden;
+    background: #f0f0f0;
 }
 
 .team-modal-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy khung vuông mà không bị biến dạng */
+    object-position: top center; /* Ưu tiên lấy phần mặt (phía trên) của nghệ sĩ */
 }
 
+/* Nội dung Text */
 .team-modal-info {
-  padding: 3rem;
-  background: var(--cream);
+    padding: 10px;
+}
+
+/* Responsive cho Máy tính (Desktop) */
+@media (min-width: 768px) {
+    .team-modal-grid {
+        flex-direction: row; /* Chuyển sang nằm ngang trên PC */
+        align-items: flex-start;
+    }
+
+    .team-modal-img {
+        flex: 0 0 400px; /* Cố định chiều rộng ảnh trên PC là 400px (hoặc tùy anh chọn) */
+        position: sticky;
+        top: 0;
+    }
+    
+    .team-modal-info {
+        flex: 1;
+        max-height: 80vh; /* Giới hạn chiều cao để cuộn nếu bio quá dài */
+        overflow-y: auto;
+        padding-left: 20px;
+    }
+}
+
+/* Đảm bảo nút đóng luôn nổi lên trên cùng */
+.close-lightbox {
+    z-index: 9999;
+    cursor: pointer !important;
 }
 
 .team-modal-info h4 {
@@ -1335,21 +1372,31 @@ document.querySelectorAll(".tmember").forEach(member => {
   });
 });
 
-// --- 3. HÀM ĐÓNG TẤT CẢ LIGHTBOX ---
+// Hàm đóng dùng chung
 function closeAllModals() {
-  document.querySelectorAll(".lightbox-modal").forEach(lb => lb.classList.remove("active"));
-  const viewer = document.getElementById("pdfViewer");
-  if(viewer) viewer.src = "";
-  document.body.style.overflow = "";
+    document.querySelectorAll('.lightbox-modal').forEach(m => m.classList.remove('active'));
+    document.body.style.overflow = '';
+    const v = document.getElementById("pdfViewer");
+    if(v) v.src = "";
 }
 
-// Gán sự kiện đóng cho tất cả nút close và vùng overlay
-document.querySelectorAll(".close-lightbox, .lightbox-overlay").forEach(el => {
-  el.addEventListener("click", closeAllModals);
+// Gán sự kiện cho tất cả nút close-lightbox
+document.querySelectorAll('.close-lightbox').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Ngăn lỗi click xuyên thấu
+        closeAllModals();
+    });
 });
 
-// Đóng bằng phím ESC
-document.addEventListener("keydown", e => { if(e.key === "Escape") closeAllModals(); });
+// Click ra ngoài vùng đen để đóng
+document.querySelectorAll('.lightbox-modal').forEach(m => {
+    m.addEventListener('click', (e) => {
+        if(e.target.classList.contains('lightbox-modal') || e.target.classList.contains('lightbox-overlay')) {
+            closeAllModals();
+        }
+    });
+});
 
 </script>
 </body>
