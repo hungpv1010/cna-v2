@@ -1259,49 +1259,49 @@ const burger=document.getElementById("burger"),mmenu=document.getElementById("mm
 burger.addEventListener("click",()=>{burger.classList.toggle("open");mmenu.classList.toggle("open");document.body.style.overflow=mmenu.classList.contains("open")?"hidden":"";});
 document.querySelectorAll(".mlink").forEach(a=>a.addEventListener("click",()=>{burger.classList.remove("open");mmenu.classList.remove("open");document.body.style.overflow="";}));
 
-// Drag scroll for production carousel
-// 1. Sửa lại đoạn code Drag Scroll phía trên để gán giá trị cho isDragging
+// --- 1. XỬ LÝ DRAG SCROLL (CAROUSEL) ---
 const scroll = document.getElementById("prodScroll");
 let isDown = false;
-let isDragging = false; // Khai báo isDragging ở phạm vi bên ngoài để dùng chung
+let isDragging = false; 
 let startX, scrollLeft;
 
 if(scroll) {
   scroll.addEventListener("mousedown", e => {
     isDown = true;
-    isDragging = false; // Reset trạng thái khi mới nhấn chuột
+    isDragging = false; 
     startX = e.pageX - scroll.offsetLeft;
     scrollLeft = scroll.scrollLeft;
+    scroll.style.cursor = "grabbing";
   });
 
   scroll.addEventListener("mousemove", e => {
     if(!isDown) return;
-    isDragging = true; // Nếu chuột di chuyển trong khi nhấn, xác định là đang kéo
+    isDragging = true; 
     e.preventDefault();
     const x = e.pageX - scroll.offsetLeft;
     scroll.scrollLeft = scrollLeft - (x - startX) * 1.5;
   });
 
-  scroll.addEventListener("mouseup", () => { isDown = false; });
+  scroll.addEventListener("mouseup", () => { isDown = false; scroll.style.cursor = "grab"; });
   scroll.addEventListener("mouseleave", () => { isDown = false; });
 }
 
-// 2. Sửa đoạn code Click mở PDF (Bỏ dòng let gây lỗi)
-document.querySelectorAll(".prod-slide[data-pdf]").forEach(slide => {
-  slide.addEventListener("click", (e) => {
-    // Nếu đang kéo (isDragging = true) thì thoát hàm, không mở PDF
-    if (isDragging) return; 
+// --- 2. LOGIC MỞ LIGHTBOX (PDF & THÀNH VIÊN) ---
 
+// Mở PDF Nhạc kịch
+document.querySelectorAll(".prod-slide[data-pdf]").forEach(slide => {
+  slide.addEventListener("click", () => {
+    if (isDragging) return; // Nếu đang kéo cuộn thì không mở
     const pdfUrl = slide.getAttribute("data-pdf");
     if (pdfUrl) {
       if (window.innerWidth <= 768) {
         window.open(pdfUrl, '_blank');
       } else {
-        const pdfViewer = document.getElementById("pdfViewer");
-        const lightbox = document.getElementById("pdfLightbox");
-        if (pdfViewer && lightbox) {
-          pdfViewer.src = pdfUrl;
-          lightbox.classList.add("active");
+        const viewer = document.getElementById("pdfViewer");
+        const lb = document.getElementById("pdfLightbox");
+        if(viewer && lb) {
+          viewer.src = pdfUrl;
+          lb.classList.add("active");
           document.body.style.overflow = "hidden";
         }
       }
@@ -1309,90 +1309,47 @@ document.querySelectorAll(".prod-slide[data-pdf]").forEach(slide => {
   });
 });
 
-// Hàm đóng Lightbox PDF
-function closePdf() {
-  const lightbox = document.getElementById("pdfLightbox");
-  const pdfViewer = document.getElementById("pdfViewer");
+// Mở Profile Thành viên (Team Member)
+document.querySelectorAll(".tmember").forEach(member => {
+  member.style.cursor = "pointer";
+  member.addEventListener("click", () => {
+    const name = member.getAttribute("data-name");
+    const role = member.getAttribute("data-role");
+    const img = member.getAttribute("data-img");
+    const bio = member.getAttribute("data-bio");
 
-  if (lightbox) {
-    // 1. Xóa class active để ẩn lightbox
-    lightbox.classList.remove("active");
-    // 2. Reset src của iframe về trống để dừng tải PDF (tiết kiệm tài nguyên)
-    if (pdfViewer) pdfViewer.src = "";
-    // 3. Cho phép cuộn trang web trở lại
-    document.body.style.overflow = "auto";
-  }
-}
+    const mImg = document.getElementById("m-img");
+    const mName = document.getElementById("m-name");
+    const mRole = document.getElementById("m-role");
+    const mBio = document.getElementById("m-bio");
+    const tModal = document.getElementById("teamModal");
 
-// Thêm logic: Click vào vùng đen bên ngoài nội dung PDF cũng sẽ đóng
-const lightbox = document.getElementById("pdfLightbox");
-if (lightbox) {
-  lightbox.addEventListener("click", (e) => {
-    // Nếu click đúng vào vùng background (chứ không phải nội dung bên trong)
-    if (e.target === lightbox) {
-      closePdf();
+    if (mImg && mName && mRole && mBio && tModal) {
+      mImg.src = img || "";
+      mName.innerText = name || "";
+      mRole.innerText = role || "";
+      mBio.innerHTML = bio || "Đang cập nhật..."; // Dùng innerHTML để nhận style đẹp anh đã soạn
+      tModal.classList.add("active");
+      document.body.style.overflow = "hidden";
     }
   });
-}
-
-// --- ĐOẠN SCRIPT XỬ LÝ LIGHTBOX CHO THÀNH VIÊN (TEAM MEMBER) ---
-
-const teamModal = document.getElementById("teamModal");
-
-document.querySelectorAll(".tmember").forEach(member => {
-    // Đảm bảo con trỏ chuột biến thành hình bàn tay khi hover vào nghệ sĩ
-    member.style.cursor = "pointer"; 
-    
-    member.addEventListener("click", () => {
-        // 1. Lấy dữ liệu từ các thuộc tính data- của thẻ .tmember
-        const name = member.getAttribute("data-name");
-        const role = member.getAttribute("data-role");
-        const img = member.getAttribute("data-img");
-        const bio = member.getAttribute("data-bio");
-
-        // 2. Kiểm tra phần tử đích trong Modal có tồn tại không trước khi gán
-        const mImg = document.getElementById("m-img");
-        const mName = document.getElementById("m-name");
-        const mRole = document.getElementById("m-role");
-        const mBio = document.getElementById("m-bio");
-
-        if (mImg && mName && mRole && mBio) {
-            // Gán ảnh
-            mImg.src = img || "";
-            mImg.alt = name || "CNA Artist";
-            
-            // Gán tên và chức danh
-            mName.innerText = name || "";
-            mRole.innerText = role || "";
-            
-            // QUAN TRỌNG: Dùng innerHTML để nhận các thẻ <b>, <br>, <div> từ data-bio
-            mBio.innerHTML = bio || "Thông tin đang được cập nhật...";
-
-            // 3. Hiển thị Modal và chặn cuộn trang chính
-            teamModal.classList.add("active");
-            document.body.style.overflow = "hidden";
-        }
-    });
 });
 
-// --- LOGIC ĐÓNG MODAL TEAM ---
-const closeTeamBtn = document.getElementById("closeTeam");
-if (closeTeamBtn) {
-    closeTeamBtn.addEventListener("click", () => {
-        teamModal.classList.remove("active");
-        document.body.style.overflow = "";
-    });
+// --- 3. HÀM ĐÓNG TẤT CẢ LIGHTBOX ---
+function closeAllModals() {
+  document.querySelectorAll(".lightbox-modal").forEach(lb => lb.classList.remove("active"));
+  const viewer = document.getElementById("pdfViewer");
+  if(viewer) viewer.src = "";
+  document.body.style.overflow = "";
 }
 
-// Click ra ngoài vùng nội dung để đóng Team Modal
-if (teamModal) {
-    teamModal.addEventListener("click", (e) => {
-        if (e.target === teamModal) {
-            teamModal.classList.remove("active");
-            document.body.style.overflow = "";
-        }
-    });
-}
+// Gán sự kiện đóng cho tất cả nút close và vùng overlay
+document.querySelectorAll(".close-lightbox, .lightbox-overlay").forEach(el => {
+  el.addEventListener("click", closeAllModals);
+});
+
+// Đóng bằng phím ESC
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeAllModals(); });
 
 </script>
 </body>
