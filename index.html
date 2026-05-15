@@ -620,6 +620,98 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   .team-modal-info { padding: 2rem; }
   .team-modal-img { height: 350px; }
 }
+
+/* Style cho nội dung trong Team Lightbox */
+#m-bio {
+    font-family: var(--body);
+    line-height: 1.7;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.bio-highlight {
+    font-family: var(--display);
+    font-size: 1.2rem;
+    color: var(--gold); /* Màu vàng đồng sang trọng */
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.bio-section {
+    margin-top: 1.8rem;
+}
+
+.bio-title {
+    font-family: var(--display);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--cream3);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.bio-list {
+    list-style: none;
+    padding: 0;
+}
+
+.bio-list li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 1.2rem;
+}
+
+.bio-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+    font-weight: bold;
+}
+
+.bio-list b {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.bio-desc {
+    margin-bottom: 12px;
+    font-style: italic;
+    color: var(--muted);
+}
+
+.bio-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.bio-tags span {
+    background: var(--cream2);
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+    color: var(--gold);
+    border: 1px solid var(--cream3);
+    transition: all 0.3s ease;
+}
+
+.bio-tags span:hover {
+    background: var(--teal);
+    color: #fff;
+    border-color: var(--teal);
+}
+
+/* Tùy chỉnh thanh cuộn cho Lightbox nội dung dài */
+.team-modal-content::-webkit-scrollbar {
+    width: 4px;
+}
+.team-modal-content::-webkit-scrollbar-thumb {
+    background: var(--teal-pale);
+}
 </style>
 </head>
 <body>
@@ -861,8 +953,31 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   <div class="team-founders fiu">
     <div class="tmember" data-name="NSƯT Cao Ngọc Ánh" 
      data-role="Nhà Sáng lập · Tổng Đạo diễn" 
-     data-img="images/caongocanh.webp" 
-     data-bio="NSƯT Cao Ngọc Ánh là người tiên phong trong việc chuyên nghiệp hóa nhạc kịch thuần Việt. Với hơn 30 năm cống hiến cho nghệ thuật, bà đã dàn dựng thành công nhiều tác phẩm vang dội như Sóng, Viên đá ngũ sắc... giúp đưa loại hình nghệ thuật này đến gần hơn với công chúng đương đại.">
+     data-img="images/caongocanh11.webp" 
+     data-bio="<div class='bio-highlight'>Sinh năm 1972</div>
+        <p>NSƯT Cao Ngọc Ánh là một trong những nhà quản lý và đạo diễn hàng đầu, người đặt nền móng cho sự chuyên nghiệp hóa nhạc kịch tại Việt Nam.</p>
+        
+        <div class='bio-section'>
+          <div class='bio-title'>Vị trí Quản lý & Giáo dục</div>
+          <ul class='bio-list'>
+            <li><b>Phó Giám đốc</b> Nhà hát Tuổi Trẻ</li>
+            <li><b>Thạc sỹ</b> Quản lý Văn hoá</li>
+            <li><b>Giáo viên thỉnh giảng</b> tại Học viện Múa Việt Nam & ĐH Sân khấu Điện ảnh Hà Nội</li>
+            <li><b>Uỷ viên BCH</b> Hội nghệ sĩ Múa Hà Nội</li>
+            <li><b>Uỷ viên Hội đồng thẩm định</b> Nghệ thuật Ban Văn Hóa Hội Phật giáo Việt Nam (Chuỗi sáng tác 'Sáng đời')</li>
+          </ul>
+        </div>
+        
+        <div class='bio-section'>
+          <div class='bio-title'>Sáng tạo & Đạo diễn tiêu biểu</div>
+          <p class='bio-desc'>Chỉ đạo dàn dựng và Tổng đạo diễn các chương trình lễ hội cấp quốc gia và quốc tế:</p>
+          <div class='bio-tags'>
+            <span>Về nguồn</span> <span>Asian Indoor Games</span> <span>Tình ngàn xanh</span> 
+            <span>Tự hào Việt Nam</span> <span>Love Story (Nhật Bản)</span> <span>Hoa ban Điện Biên</span>
+            <span>Lễ hội Thành Tuyên</span> <span>Nhớ mãi ơn Người</span> <span>Vesak 2025</span>
+            <span>Việt - Lào tình anh em</span>
+          </div>
+        </div>">
       <img class="tmember-img" src="images/caongocanh.webp" alt="NSƯT Cao Ngọc Ánh" style="filter:grayscale(10%);">
       <div class="tmember-info">
         <div class="tmember-role">Nhà Sáng lập · Tổng Đạo diễn</div>
@@ -1220,43 +1335,64 @@ if (lightbox) {
   });
 }
 
-// HÀM TỔNG ĐỂ ĐÓNG TẤT CẢ MODAL
-function closeActiveModals() {
-    // 1. Tìm tất cả các modal đang có class 'active' và gỡ bỏ nó
-    document.querySelectorAll('.lightbox-modal.active').forEach(modal => {
-        modal.classList.remove('active');
-    });
+// --- ĐOẠN SCRIPT XỬ LÝ LIGHTBOX CHO THÀNH VIÊN (TEAM MEMBER) ---
 
-    // 2. Dừng nội dung PDF (quan trọng để tránh tiếng vẫn phát hoặc tốn ram)
-    const pdfViewer = document.getElementById("pdfViewer");
-    if (pdfViewer) pdfViewer.src = "";
+const teamModal = document.getElementById("teamModal");
 
-    // 3. Cho phép trang web cuộn lại bình thường
-    document.body.style.overflow = "";
-}
+document.querySelectorAll(".tmember").forEach(member => {
+    // Đảm bảo con trỏ chuột biến thành hình bàn tay khi hover vào nghệ sĩ
+    member.style.cursor = "pointer"; 
+    
+    member.addEventListener("click", () => {
+        // 1. Lấy dữ liệu từ các thuộc tính data- của thẻ .tmember
+        const name = member.getAttribute("data-name");
+        const role = member.getAttribute("data-role");
+        const img = member.getAttribute("data-img");
+        const bio = member.getAttribute("data-bio");
 
-// Gán sự kiện click cho TẤT CẢ các nút có class .close-btn
-document.querySelectorAll('.close-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Ngăn sự kiện nổi bọt
-        closeActiveModals();
-    });
-});
+        // 2. Kiểm tra phần tử đích trong Modal có tồn tại không trước khi gán
+        const mImg = document.getElementById("m-img");
+        const mName = document.getElementById("m-name");
+        const mRole = document.getElementById("m-role");
+        const mBio = document.getElementById("m-bio");
 
-// Click ra ngoài vùng nội dung (vùng tối) để đóng
-document.querySelectorAll('.lightbox-modal').forEach(modal => {
-    modal.addEventListener('click', (e) => {
-        // Nếu click chính xác vào modal (lớp nền) chứ không phải con của nó
-        if (e.target === modal || e.target.classList.contains('lightbox-overlay')) {
-            closeActiveModals();
+        if (mImg && mName && mRole && mBio) {
+            // Gán ảnh
+            mImg.src = img || "";
+            mImg.alt = name || "CNA Artist";
+            
+            // Gán tên và chức danh
+            mName.innerText = name || "";
+            mRole.innerText = role || "";
+            
+            // QUAN TRỌNG: Dùng innerHTML để nhận các thẻ <b>, <br>, <div> từ data-bio
+            mBio.innerHTML = bio || "Thông tin đang được cập nhật...";
+
+            // 3. Hiển thị Modal và chặn cuộn trang chính
+            teamModal.classList.add("active");
+            document.body.style.overflow = "hidden";
         }
     });
 });
 
-// Nhấn phím ESC để đóng nhanh
-document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") closeActiveModals();
-});
+// --- LOGIC ĐÓNG MODAL TEAM ---
+const closeTeamBtn = document.getElementById("closeTeam");
+if (closeTeamBtn) {
+    closeTeamBtn.addEventListener("click", () => {
+        teamModal.classList.remove("active");
+        document.body.style.overflow = "";
+    });
+}
+
+// Click ra ngoài vùng nội dung để đóng Team Modal
+if (teamModal) {
+    teamModal.addEventListener("click", (e) => {
+        if (e.target === teamModal) {
+            teamModal.classList.remove("active");
+            document.body.style.overflow = "";
+        }
+    });
+}
 
 </script>
 </body>
