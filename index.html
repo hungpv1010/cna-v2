@@ -562,71 +562,87 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   }
 }
 
-/* Team Modal Styles */
+/* Layout chung cho Modal Team */
 .team-modal-content {
-  position: relative;
-  background: var(--cream);
-  width: 90%;
-  max-width: 900px;
-  max-height: 85vh;
-  z-index: 10001;
-  border-radius: 2px;
-  overflow-y: auto;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    position: relative;
+    background: var(--cream);
+    width: 95%;
+    max-width: 1000px; /* Tăng nhẹ độ rộng để ảnh dọc trông cân đối hơn */
+    max-height: 90vh;
+    z-index: 10001;
+    border-radius: 2px;
+    overflow-y: auto;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
 }
 
-/* Layout chung cho Modal */
 .team-modal-grid {
     display: flex;
-    flex-direction: column; /* Mặc định là dọc cho mobile */
-    gap: 20px;
+    flex-direction: column; /* Mobile: Dọc */
 }
 
-/* Khung chứa ảnh - Ép về hình vuông */
+/* Ảnh trên Mobile: Ép vuông để gọn */
 .team-modal-img {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Ép ảnh luôn vuông */
+    aspect-ratio: 1 / 1; 
     overflow: hidden;
-    background: #f0f0f0;
 }
 
 .team-modal-img img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Đảm bảo ảnh lấp đầy khung vuông mà không bị biến dạng */
-    object-position: top center; /* Ưu tiên lấy phần mặt (phía trên) của nghệ sĩ */
+    object-fit: cover;
+    object-position: top center;
+    display: block;
 }
 
-/* Nội dung Text */
 .team-modal-info {
-    padding: 10px;
+    padding: 2rem;
 }
 
-/* Responsive cho Máy tính (Desktop) */
+/* CSS CHO MÁY TÍNH (DESKTOP) */
 @media (min-width: 768px) {
     .team-modal-grid {
-        flex-direction: row; /* Chuyển sang nằm ngang trên PC */
-        align-items: flex-start;
+        flex-direction: row; /* PC: Nằm ngang */
+        align-items: stretch;
     }
 
     .team-modal-img {
-        flex: 0 0 400px; /* Cố định chiều rộng ảnh trên PC là 400px (hoặc tùy anh chọn) */
-        position: sticky;
-        top: 0;
+        flex: 0 0 40%; /* Ảnh chiếm 40% bề ngang */
+        aspect-ratio: auto; /* PC: Bỏ ép vuông, để ảnh hiện hết chiều dọc */
+        height: auto;
     }
-    
+
+    .team-modal-img img {
+        height: auto;
+        min-height: 100%; /* Đảm bảo ảnh luôn phủ kín chiều dọc của text bên cạnh */
+        object-fit: contain; /* PC: Hiện toàn bộ ảnh không bị cắt */
+        background: var(--ink); /* Thêm nền tối nếu ảnh quá gầy */
+    }
+
     .team-modal-info {
         flex: 1;
-        max-height: 80vh; /* Giới hạn chiều cao để cuộn nếu bio quá dài */
-        overflow-y: auto;
-        padding-left: 20px;
+        padding: 3.5rem;
     }
 }
 
-/* Đảm bảo nút đóng luôn nổi lên trên cùng */
+/* Đảm bảo nút đóng luôn nổi lên và dễ click */
 .close-lightbox {
-    z-index: 9999;
+    position: fixed; /* Chuyển sang fixed để luôn nằm góc màn hình khi cuộn modal */
+    top: 30px;
+    right: 30px;
+    z-index: 10010;
     cursor: pointer !important;
+    pointer-events: auto;
+    background: var(--teal);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-size: 24px;
 }
 
 .team-modal-info h4 {
