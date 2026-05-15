@@ -562,87 +562,101 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
   }
 }
 
-/* Layout chung cho Modal Team */
+/* Container chính của Modal */
 .team-modal-content {
     position: relative;
-    background: var(--cream);
+    background: #fff;
     width: 95%;
-    max-width: 1000px; /* Tăng nhẹ độ rộng để ảnh dọc trông cân đối hơn */
-    max-height: 90vh;
-    z-index: 10001;
-    border-radius: 2px;
-    overflow-y: auto;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    max-width: 1100px;
+    margin: 2vh auto;
+    border-radius: 4px;
+    overflow: hidden; /* Cắt phần thừa */
+    display: flex;
+    flex-direction: column;
 }
 
+/* Khu vực lưới chứa ảnh và thông tin */
 .team-modal-grid {
     display: flex;
-    flex-direction: column; /* Mobile: Dọc */
+    flex-direction: column; /* Mobile mặc định */
 }
 
-/* Ảnh trên Mobile: Ép vuông để gọn */
+/* Xử lý ảnh */
 .team-modal-img {
     width: 100%;
-    aspect-ratio: 1 / 1; 
-    overflow: hidden;
+    background: #1a1a1a; /* Nền tối để tôn ảnh nếu ảnh không khít khung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .team-modal-img img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    display: block;
+    object-fit: cover; /* Mobile: Phủ kín */
 }
 
+/* Xử lý Text */
 .team-modal-info {
     padding: 2rem;
+    background: #fff;
 }
 
-/* CSS CHO MÁY TÍNH (DESKTOP) */
-@media (min-width: 768px) {
+/* --- TỐI ƯU CHO DESKTOP --- */
+@media (min-width: 992px) {
+    .team-modal-content {
+        max-height: 85vh; /* Giới hạn chiều cao modal không quá màn hình */
+        flex-direction: row;
+    }
+
     .team-modal-grid {
-        flex-direction: row; /* PC: Nằm ngang */
-        align-items: stretch;
+        flex-direction: row;
+        width: 100%;
     }
 
     .team-modal-img {
-        flex: 0 0 40%; /* Ảnh chiếm 40% bề ngang */
-        aspect-ratio: auto; /* PC: Bỏ ép vuông, để ảnh hiện hết chiều dọc */
-        height: auto;
+        flex: 0 0 45%; /* Ảnh chiếm 45% */
+        max-height: 85vh;
     }
 
     .team-modal-img img {
-        height: auto;
-        min-height: 100%; /* Đảm bảo ảnh luôn phủ kín chiều dọc của text bên cạnh */
-        object-fit: contain; /* PC: Hiện toàn bộ ảnh không bị cắt */
-        background: var(--ink); /* Thêm nền tối nếu ảnh quá gầy */
+        object-fit: contain; /* HIỆN HẾT ẢNH không bị cắt */
+        height: 100%;
+        width: 100%;
     }
 
     .team-modal-info {
         flex: 1;
-        padding: 3.5rem;
+        overflow-y: auto; /* Chỉ cuộn phần chữ nếu chữ quá dài */
+        max-height: 85vh;
+        padding: 3rem;
     }
 }
 
-/* Đảm bảo nút đóng luôn nổi lên và dễ click */
+/* NÚT CLOSE ĐẶT LẠI VỊ TRÍ ĐỂ DỄ THẤY */
 .close-lightbox {
-    position: fixed; /* Chuyển sang fixed để luôn nằm góc màn hình khi cuộn modal */
-    top: 30px;
-    right: 30px;
-    z-index: 10010;
-    cursor: pointer !important;
-    pointer-events: auto;
-    background: var(--teal);
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10005;
+    background: rgba(26, 26, 26, 0.8);
     color: #fff;
+    border: none;
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    cursor: pointer !important; /* Luôn hiển thị bàn tay */
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
     font-size: 24px;
+    transition: all 0.3s ease;
+    pointer-events: auto; /* Quan trọng: Đảm bảo nhận sự kiện chuột */
+}
+
+.close-lightbox:hover {
+    background: var(--teal);
+    transform: rotate(90deg);
 }
 
 .team-modal-info h4 {
