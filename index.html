@@ -791,7 +791,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
     <div id="pdfLightbox" class="lightbox-modal">
       <div class="lightbox-overlay"></div>
       <div class="lightbox-content">
-        <button class="close-lightbox" aria-label="Đóng">&times;</button>
+        <button class="close-lightbox close-btn" aria-label="Đóng">&times;</button>
         <iframe id="pdfViewer" src="" frameborder="0"></iframe>
       </div>
     </div>
@@ -945,7 +945,7 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
 <div id="teamModal" class="lightbox-modal">
   <div class="lightbox-overlay"></div>
   <div class="team-modal-content">
-    <button class="close-lightbox" id="closeTeam">&times;</button>
+    <button class="close-lightbox close-btn" id="closeTeam">&times;</button>
     <div class="team-modal-grid">
       <div class="team-modal-img">
         <img id="m-img" src="" alt="">
@@ -1220,44 +1220,43 @@ if (lightbox) {
   });
 }
 
-// Logic Team Modal
-const teamModal = document.getElementById("teamModal");
-const closeTeam = document.getElementById("closeTeam");
+// HÀM TỔNG ĐỂ ĐÓNG TẤT CẢ MODAL
+function closeActiveModals() {
+    // 1. Tìm tất cả các modal đang có class 'active' và gỡ bỏ nó
+    document.querySelectorAll('.lightbox-modal.active').forEach(modal => {
+        modal.classList.remove('active');
+    });
 
-document.querySelectorAll(".tmember").forEach(member => {
-  member.style.cursor = "pointer"; // Hiển thị bàn tay khi hover
-  
-  member.addEventListener("click", () => {
-    // Lấy dữ liệu từ data-attributes
-    const name = member.getAttribute("data-name");
-    const role = member.getAttribute("data-role");
-    const img = member.getAttribute("data-img");
-    const bio = member.getAttribute("data-bio");
+    // 2. Dừng nội dung PDF (quan trọng để tránh tiếng vẫn phát hoặc tốn ram)
+    const pdfViewer = document.getElementById("pdfViewer");
+    if (pdfViewer) pdfViewer.src = "";
 
-    // Gán vào Modal
-    document.getElementById("m-name").innerText = name;
-    document.getElementById("m-role").innerText = role;
-    document.getElementById("m-img").src = img;
-    document.getElementById("m-bio").innerText = bio;
+    // 3. Cho phép trang web cuộn lại bình thường
+    document.body.style.overflow = "";
+}
 
-    // Hiển thị
-    teamModal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
+// Gán sự kiện click cho TẤT CẢ các nút có class .close-btn
+document.querySelectorAll('.close-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Ngăn sự kiện nổi bọt
+        closeActiveModals();
+    });
 });
 
-// Đóng Team Modal
-function closeTeamModal() {
-  teamModal.classList.remove("active");
-  document.body.style.overflow = "";
-}
+// Click ra ngoài vùng nội dung (vùng tối) để đóng
+document.querySelectorAll('.lightbox-modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+        // Nếu click chính xác vào modal (lớp nền) chứ không phải con của nó
+        if (e.target === modal || e.target.classList.contains('lightbox-overlay')) {
+            closeActiveModals();
+        }
+    });
+});
 
-if (closeTeam) closeTeam.addEventListener("click", closeTeamModal);
-if (teamModal) {
-  teamModal.addEventListener("click", (e) => {
-    if (e.target === teamModal) closeTeamModal();
-  });
-}
+// Nhấn phím ESC để đóng nhanh
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") closeActiveModals();
+});
 
 </script>
 </body>
