@@ -784,6 +784,177 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
 .team-modal-content::-webkit-scrollbar-thumb {
     background: var(--teal-pale);
 }
+
+/* PRESS */
+#press{
+  padding:10rem 6vw;
+  background:#090909;
+  position:relative;
+}
+
+.press-hero{
+  margin-top:4rem;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:4rem;
+  align-items:center;
+}
+
+.press-hero-image{
+  overflow:hidden;
+  position:relative;
+}
+
+.press-hero-image img{
+  width:100%;
+  height:720px;
+  object-fit:cover;
+  transition:1.2s ease;
+}
+
+.press-hero:hover img{
+  transform:scale(1.04);
+}
+
+.press-kicker{
+  font-size:.72rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin-bottom:1.5rem;
+}
+
+.press-big-title{
+  font-family:var(--display);
+  font-size:clamp(2rem,4vw,4.2rem);
+  line-height:1.08;
+  color:#fff;
+  margin-bottom:2rem;
+  font-weight:300;
+}
+
+.press-desc{
+  color:var(--muted);
+  font-size:1rem;
+  line-height:1.9;
+  max-width:620px;
+}
+
+.press-tags{
+  margin-top:2rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.8rem;
+}
+
+.press-tags span{
+  border:1px solid rgba(255,255,255,.12);
+  padding:.75rem 1rem;
+  font-size:.72rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.7);
+}
+
+.press-headline{
+  margin-top:8rem;
+  margin-bottom:3rem;
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+
+.press-headline span{
+  font-size:.72rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.5);
+}
+
+.press-line{
+  width:80px;
+  height:1px;
+  background:var(--teal);
+}
+
+.press-list{
+  display:flex;
+  flex-direction:column;
+}
+
+.press-item{
+  display:flex;
+  justify-content:space-between;
+  gap:2rem;
+  padding:2rem 0;
+  border-top:1px solid rgba(255,255,255,.08);
+  text-decoration:none;
+  transition:.4s ease;
+}
+
+.press-item:last-child{
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.press-item:hover{
+  padding-left:1rem;
+}
+
+.press-source{
+  font-size:.72rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin-bottom:1rem;
+}
+
+.press-title{
+  font-size:1.45rem;
+  line-height:1.5;
+  color:#fff;
+  max-width:900px;
+  font-family:var(--display);
+  font-weight:300;
+}
+
+.press-arrow{
+  font-size:1.6rem;
+  color:rgba(255,255,255,.35);
+  transition:.3s ease;
+}
+
+.press-item:hover .press-arrow{
+  transform:translate(4px,-4px);
+  color:#fff;
+}
+
+@media(max-width:980px){
+
+  #press{
+    padding:7rem 6vw;
+  }
+
+  .press-hero{
+    grid-template-columns:1fr;
+    gap:2rem;
+  }
+
+  .press-hero-image img{
+    height:460px;
+  }
+
+  .press-big-title{
+    font-size:2.4rem;
+  }
+
+  .press-title{
+    font-size:1.15rem;
+  }
+
+  .press-item{
+    align-items:flex-start;
+  }
+}
 </style>
 </head>
 <body>
@@ -1228,6 +1399,122 @@ footer{background:var(--ink);padding:5rem 8vw 2.5rem;}
         <div><div class="strat-title">Múa dân gian đương đại</div><div class="strat-desc">Tinh thần truyền thống và hơi thở hiện đại, nơi những chất liệu văn hóa dân gian được tái hiện qua ngôn ngữ múa sáng tạo, giàu cảm xúc</div></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- PRESS / CNA RA MẮT -->
+<section id="press">
+  <div class="s-num">06 — Báo chí</div>
+
+  <h2 class="s-title">
+    CNA Creative Arts<br>
+    <em>ra mắt chính thức</em>
+  </h2>
+
+  <div class="press-hero fiu">
+    <div class="press-hero-image">
+      <img src="images/cna-launch.webp" alt="CNA Creative Arts ra mắt">
+    </div>
+
+    <div class="press-hero-content">
+      <div class="press-kicker">Họp báo · Ra mắt thương hiệu</div>
+
+      <div class="press-big-title">
+        CNA Creative Arts chính thức ra mắt —
+        khởi đầu cho hành trình chuyên nghiệp hóa
+        nhạc kịch Việt Nam
+      </div>
+
+      <div class="press-desc">
+        Sự kiện quy tụ đông đảo nghệ sĩ, nhà sản xuất,
+        đối tác văn hóa và báo chí nhằm công bố định hướng
+        phát triển nhạc kịch thuần Việt mang bản sắc dân tộc
+        và tư duy sân khấu đương đại.
+      </div>
+
+      <div class="press-tags">
+        <span>#NhạcKịchThuầnViệt</span>
+        <span>#CNACreativeArts</span>
+        <span>#MusicalTheatre</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRESS ARTICLES -->
+  <div class="press-headline">
+    <div class="press-line"></div>
+    <span>Báo chí nói gì về CNA</span>
+  </div>
+
+  <div class="press-list">
+
+    <a href="https://example.com"
+       target="_blank"
+       class="press-item fiu">
+
+      <div class="press-item-left">
+        <div class="press-source">VnExpress</div>
+
+        <div class="press-title">
+          CNA Creative Arts và giấc mơ đưa nhạc kịch Việt
+          ra sân khấu quốc tế
+        </div>
+      </div>
+
+      <div class="press-arrow">↗</div>
+    </a>
+
+    <a href="https://example.com"
+       target="_blank"
+       class="press-item fiu"
+       style="animation-delay:.1s">
+
+      <div class="press-item-left">
+        <div class="press-source">Dân Trí</div>
+
+        <div class="press-title">
+          NSƯT Cao Ngọc Ánh cùng hành trình kiến tạo
+          nhạc kịch thuần Việt
+        </div>
+      </div>
+
+      <div class="press-arrow">↗</div>
+    </a>
+
+    <a href="https://example.com"
+       target="_blank"
+       class="press-item fiu"
+       style="animation-delay:.2s">
+
+      <div class="press-item-left">
+        <div class="press-source">Thanh Niên</div>
+
+        <div class="press-title">
+          CNA Creative Arts công bố loạt dự án sân khấu
+          và đào tạo nghệ thuật năm 2026
+        </div>
+      </div>
+
+      <div class="press-arrow">↗</div>
+    </a>
+
+    <a href="https://example.com"
+       target="_blank"
+       class="press-item fiu"
+       style="animation-delay:.3s">
+
+      <div class="press-item-left">
+        <div class="press-source">Báo Văn Hóa</div>
+
+        <div class="press-title">
+          Nhạc kịch Việt Nam cần những đơn vị tiên phong
+          như CNA Creative Arts
+        </div>
+      </div>
+
+      <div class="press-arrow">↗</div>
+    </a>
+
   </div>
 </section>
 
